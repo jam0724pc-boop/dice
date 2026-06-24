@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>わくわくサイコロブロック</title>
+
+<!-- 紙吹雪ライブラリ（canvas-confetti） -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+<!-- まるっこいポップな日本語フォント -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+P+One&family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --sky-top:#6fd0ff;
+    --sky-mid:#9fe6ff;
+    --sky-bot:#d9f6ff;
+    --ink:#27315a;
+    --ink-soft:#5a6796;
+    --red:#ff5a5f;
+    --red-deep:#e8403a;
+    --yellow:#ffd234;
+    --yellow-deep:#f5b400;
+    --blue:#3aa0ff;
+    --blue-deep:#1f74e0;
+    --green:#5ccb63;
+    --green-deep:#36a93f;
+    --purple:#9b7bff;
+    --panel:#ffffff;
+    --shadow:rgba(39,49,90,.22);
+    --cube:clamp(82px, 21vw, 124px);
+    --half:calc(var(--cube)/2);
+  }
+
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+  html,body{ margin:0; padding:0; min-height:100%; }
+
+  body{
+    font-family:'M PLUS Rounded 1c', system-ui, sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(120% 80% at 50% -10%, #ffffff8a 0%, transparent 55%),
+      linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 45%, var(--sky-bot) 100%);
+    background-attachment:fixed;
+    min-height:100dvh;
+    overflow-x:hidden;
+    user-select:none;
+  }
+
+  /* ふんわり浮かぶ背景の星 */
+  .bg-stars{ position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+  .bg-stars span{
+    position:absolute; font-size:clamp(18px,4vw,34px); opacity:.5;
+    animation:bgFloat linear infinite;
+  }
+  @keyframes bgFloat{
+    0%{ transform:translateY(20px) rotate(0deg); }
+    50%{ transform:translateY(-20px) rotate(15deg); }
+    100%{ transform:translateY(20px) rotate(0deg); }
+  }
+
+  /* 画面全体をくるむ（スクリーンシェイク用） */
+  .shake-wrap{ position:relative; z-index:1; min-height:100dvh; display:flex; flex-direction:column; }
+  .shake-wrap.shake{ animation:screenShake .42s cubic-bezier(.36,.07,.19,.97); }
+  @keyframes screenShake{
+    0%,100%{ transform:translate(0,0) rotate(0); }
+    15%{ transform:translate(-9px,7px) rotate(-.6deg); }
+    30%{ transform:translate(9px,-7px) rotate(.6deg); }
+    45%{ transform:translate(-7px,5px) rotate(-.4deg); }
+    60%{ transform:translate(7px,-4px) rotate(.4deg); }
+    80%{ transform:translate(-4px,3px) rotate(0); }
+  }
+
+  /* ===== 上部バー ===== */
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:10px; padding:14px 16px 0;
+  }
+
+  .coin-box{
+    display:flex; align-items:center; gap:10px;
+    background:var(--panel);
+    border:4px solid var(--ink);
+    border-radius:999px;
+    padding:7px 16px 7px 8px;
+    box-shadow:0 6px 0 var(--shadow);
+  }
+  .coin-box.lose{ animation:coinLose .5s ease; }
+  @keyframes coinLose{
+    0%,100%{ transform:translate(0,0); }
+    25%{ transform:translate(-5px,0); background:#ffe1e1; }
+    75%{ transform:translate(5px,0); background:#ffe1e1; }
+  }
+  .coin{
+    width:38px; height:38px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #fff6c4, var(--yellow) 45%, var(--yellow-deep) 100%);
+    border:3px solid #b07e00;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Mochiy Pop P One'; color:#9a6b00; font-size:20px;
+    box-shadow:inset 0 -3px 0 #d89a00, 0 2px 4px rgba(0,0,0,.2);
+  }
+  .coin-num{
+    font-family:'Mochiy Pop P One'; font-size:26px; color:var(--ink);
+    min-width:36px; text-align:center; line-height:1;
+  }
+  .coin-num.bump{ animation:bump .35s ease; }
+  @keyframes bump{ 0%,100%{transform:scale(1);} 40%{transform:scale(1.4); color:var(--red-deep);} }
+
+  .coin-reset{
+    border:none; background:var(--blue); color:#fff;
+    font-family:'M PLUS Rounded 1c'; font-weight:800; font-size:13px;
+    padding:6px 10px; border-radius:999px; cursor:pointer;
+    box-shadow:0 3px 0 var(--blue-deep);
+  }
+  .coin-reset:active{ transform:translateY(2px); box-shadow:0 1px 0 var(--blue-deep); }
+
+  .title{
+    font-family:'Mochiy Pop P One';
+    font-size:clamp(16px,4.5vw,26px);
+    color:#fff;
+    text-shadow:0 2px 0 var(--blue-deep), 2px 0 0 var(--blue-deep), -2px 0 0 var(--blue-deep), 0 -2px 0 var(--blue-deep), 0 4px 0 rgba(0,0,0,.18);
+    text-align:right; line-height:1.2; letter-spacing:1px;
+  }
+
+  /* ===== コントロール ===== */
+  .controls{ padding:14px 16px 4px; display:flex; flex-direction:column; gap:12px; align-items:center; }
+
+  .ctrl-row{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; align-items:center; width:100%; max-width:640px; }
+
+  .ctrl-label{ font-weight:800; color:var(--ink-soft); font-size:14px; width:100%; text-align:center; margin-bottom:-4px; }
+
+  .count-btn{
+    font-family:'Mochiy Pop P One';
+    font-size:clamp(16px,4vw,20px);
+    min-width:64px; padding:12px 14px;
+    border:4px solid var(--ink); border-radius:18px;
+    background:var(--panel); color:var(--ink);
+    cursor:pointer; box-shadow:0 5px 0 var(--shadow);
+    transition:transform .08s, box-shadow .08s;
+  }
+  .count-btn:active{ transform:translateY(3px); box-shadow:0 2px 0 var(--shadow); }
+  .count-btn.active{
+    background:linear-gradient(180deg, #ffe066, var(--yellow));
+    border-color:#b07e00; color:#7a5500;
+    box-shadow:0 5px 0 #b07e00;
+  }
+
+  .select-wrap{ position:relative; width:100%; max-width:640px; }
+  .dice-select{
+    width:100%; -webkit-appearance:none; appearance:none;
+    font-family:'M PLUS Rounded 1c'; font-weight:800; font-size:16px;
+    padding:14px 44px 14px 18px;
+    border:4px solid var(--ink); border-radius:18px;
+    background:var(--panel); color:var(--ink); cursor:pointer;
+    box-shadow:0 5px 0 var(--shadow);
+  }
+  .select-wrap::after{
+    content:"▼"; position:absolute; right:20px; top:50%;
+    transform:translateY(-50%); pointer-events:none; color:var(--ink-soft); font-size:14px;
+  }
+
+  .custom-wrap{ width:100%; max-width:640px; display:none; flex-direction:column; gap:8px; }
+  .custom-wrap.show{ display:flex; }
+  .custom-wrap label{ font-weight:800; color:var(--ink-soft); font-size:14px; }
+  .custom-row{ display:flex; gap:8px; }
+  .custom-input{
+    flex:1; font-family:'M PLUS Rounded 1c'; font-size:15px;
+    padding:12px 14px; border:4px solid var(--ink); border-radius:16px;
+    background:var(--panel); color:var(--ink); min-width:0;
+  }
+  .custom-apply{
+    font-family:'Mochiy Pop P One'; font-size:14px;
+    padding:0 16px; border:4px solid #36a93f; border-radius:16px;
+    background:var(--green); color:#fff; cursor:pointer; white-space:nowrap;
+    box-shadow:0 4px 0 var(--green-deep);
+  }
+  .custom-apply:active{ transform:translateY(2px); box-shadow:0 2px 0 var(--green-deep); }
+
+  /* ===== サイコロ ステージ ===== */
+  .stage{
+    flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:24px; padding:18px 16px 8px; perspective:900px;
+  }
+  .dice-area{
+    display:flex; flex-wrap:wrap; gap:clamp(18px,6vw,40px);
+    align-items:center; justify-content:center;
+    min-height:calc(var(--cube) + 60px);
+  }
+
+  .die-jumper{ animation:floaty 3s ease-in-out infinite; will-change:transform; }
+  @keyframes floaty{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-16px);} }
+  .die-jumper.jumping{ animation:diceJump .85s cubic-bezier(.3,.7,.4,1) forwards; }
+  @keyframes diceJump{
+    0%{ transform:translateY(0) scale(1.12,.82); }
+    18%{ transform:translateY(-90px) scale(.92,1.1); }
+    42%{ transform:translateY(-150px) scale(1,1); }
+    66%{ transform:translateY(-110px) scale(1,1); }
+    88%{ transform:translateY(0) scale(1.2,.74); }
+    100%{ transform:translateY(0) scale(1,1); }
+  }
+
+  .cube{
+    width:var(--cube); height:var(--cube); position:relative;
+    transform-style:preserve-3d;
+    transform:rotateX(-16deg) rotateY(-18deg);
+  }
+  .cube.idle-rot{ animation:idleSpin 7s linear infinite; }
+  @keyframes idleSpin{
+    from{ transform:rotateX(-16deg) rotateY(0deg); }
+    to{ transform:rotateX(-16deg) rotateY(360deg); }
+  }
+  .cube.spinning{ animation:diceSpin .45s linear infinite; }
+  @keyframes diceSpin{
+    from{ transform:rotateX(0) rotateY(0); }
+    to{ transform:rotateX(720deg) rotateY(1080deg); }
+  }
+
+  .face{
+    position:absolute; width:var(--cube); height:var(--cube);
+    display:flex; align-items:center; justify-content:center;
+    padding:9%;
+    background:linear-gradient(160deg, #5cb3ff 0%, var(--blue) 55%, var(--blue-deep) 100%);
+    border-radius:16%;
+    box-shadow:inset 0 0 0 3px #1357b0, inset 0 -6px 8px rgba(0,0,0,.18);
+    backface-visibility:visible;
+  }
+  .face .pip{
+    width:100%; height:100%;
+    background:linear-gradient(180deg,#ffffff,#eaf4ff);
+    border-radius:18%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Mochiy Pop P One';
+    color:var(--blue-deep);
+    line-height:1; text-align:center;
+    box-shadow:inset 0 3px 0 #fff, inset 0 -4px 6px rgba(31,116,224,.18);
+    overflow:hidden; padding:4px;
+    word-break:break-word;
+  }
+  /* 四隅の星かざり */
+  .face .corner{ position:absolute; width:13%; height:13%; background:var(--yellow);
+    clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+  }
+  .face .c1{ top:6%; left:6%; } .face .c2{ top:6%; right:6%; }
+  .face .c3{ bottom:6%; left:6%; } .face .c4{ bottom:6%; right:6%; }
+
+  .f-front { transform: rotateY(0deg)   translateZ(var(--half)); }
+  .f-back  { transform: rotateY(180deg) translateZ(var(--half)); }
+  .f-right { transform: rotateY(90deg)  translateZ(var(--half)); }
+  .f-left  { transform: rotateY(-90deg) translateZ(var(--half)); }
+  .f-top   { transform: rotateX(90deg)  translateZ(var(--half)); }
+  .f-bottom{ transform: rotateX(-90deg) translateZ(var(--half)); }
+
+  .die-shadow{
+    width:calc(var(--cube)*.7); height:14px; margin:6px auto 0;
+    background:radial-gradient(ellipse, rgba(39,49,90,.28), transparent 70%);
+    border-radius:50%;
+  }
+
+  /* ===== JUMP ボタン ===== */
+  .jump-btn{
+    font-family:'Mochiy Pop P One';
+    font-size:clamp(26px,7vw,40px);
+    letter-spacing:2px;
+    color:#fff;
+    padding:18px 52px;
+    border:5px solid #b8261f; border-radius:999px;
+    background:linear-gradient(180deg,#ff8a8e 0%, var(--red) 40%, var(--red-deep) 100%);
+    box-shadow:0 8px 0 #b8261f, 0 12px 18px rgba(0,0,0,.2);
+    cursor:pointer; text-shadow:0 2px 3px rgba(0,0,0,.25);
+    transition:transform .08s, box-shadow .08s;
+  }
+  .jump-btn:active{ transform:translateY(5px); box-shadow:0 3px 0 #b8261f, 0 6px 10px rgba(0,0,0,.2); }
+  .jump-btn:disabled{ filter:grayscale(.4) brightness(.95); cursor:default; }
+  .jump-btn .arrow{ display:inline-block; animation:bobArrow 1s ease-in-out infinite; }
+  @keyframes bobArrow{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-5px);} }
+
+  /* ===== 結果ポップアップ ===== */
+  .result-overlay{
+    position:fixed; inset:0; z-index:40;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(39,49,90,.32); backdrop-filter:blur(2px);
+    opacity:0; pointer-events:none; transition:opacity .2s;
+    padding:20px;
+  }
+  .result-overlay.show{ opacity:1; pointer-events:auto; }
+  .result-card{
+    background:var(--panel); border:6px solid var(--ink); border-radius:30px;
+    padding:22px 26px 26px; text-align:center; max-width:90vw;
+    box-shadow:0 14px 0 var(--shadow), 0 20px 40px rgba(0,0,0,.3);
+    transform:scale(.6); transition:transform .35s cubic-bezier(.2,1.6,.4,1);
+  }
+  .result-overlay.show .result-card{ transform:scale(1); }
+  .result-head{
+    font-family:'Mochiy Pop P One'; font-size:clamp(22px,6vw,32px);
+    color:var(--red-deep); margin-bottom:14px;
+    text-shadow:0 2px 0 #ffd9d7;
+  }
+  .result-faces{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:14px; }
+  .result-chip{
+    font-family:'Mochiy Pop P One'; font-size:clamp(20px,5vw,30px);
+    min-width:54px; padding:10px 14px;
+    background:linear-gradient(180deg,#eaf4ff,#cfe6ff);
+    border:4px solid var(--blue-deep); border-radius:16px; color:var(--blue-deep);
+    animation:chipPop .4s backwards;
+  }
+  .result-chip.bad{ background:linear-gradient(180deg,#ffe0e0,#ffc2c2); border-color:var(--red-deep); color:var(--red-deep); }
+  @keyframes chipPop{ from{ transform:scale(0) rotate(-15deg); } to{ transform:scale(1) rotate(0); } }
+  .result-total{
+    font-family:'Mochiy Pop P One'; font-size:clamp(28px,8vw,46px);
+    color:var(--ink); margin-top:6px;
+  }
+  .result-total small{ font-size:.5em; color:var(--ink-soft); display:block; }
+  .result-total .big{ color:var(--green-deep); }
+  .result-hint{ margin-top:14px; font-size:13px; color:var(--ink-soft); font-weight:700; }
+
+  /* ===== 履歴 ===== */
+  .history{
+    background:rgba(255,255,255,.78); margin:6px 0 0;
+    border-top:5px solid var(--ink);
+    padding:14px 16px 26px;
+  }
+  .history h2{
+    font-family:'Mochiy Pop P One'; font-size:16px; color:var(--ink-soft);
+    margin:0 0 10px; text-align:center;
+  }
+  .history-list{ list-style:none; margin:0 auto; padding:0; max-width:560px; display:flex; flex-direction:column; gap:8px; }
+  .history-list li{
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    background:#fff; border:3px solid #cdd6f0; border-radius:14px;
+    padding:8px 12px; font-weight:700; animation:slideIn .3s backwards;
+  }
+  @keyframes slideIn{ from{ transform:translateX(-12px); opacity:0; } to{ transform:translateX(0); opacity:1; } }
+  .history-list .h-num{
+    font-family:'Mochiy Pop P One'; color:#fff; background:var(--purple);
+    width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px;
+  }
+  .history-list .h-faces{ color:var(--blue-deep); }
+  .history-list .h-total{ margin-left:auto; font-family:'Mochiy Pop P One'; color:var(--green-deep); }
+  .history-empty{ text-align:center; color:var(--ink-soft); font-weight:700; padding:10px; }
+
+  /* リーチ・大当たり用の光るリング */
+  .result-card.celebrate{ animation:cardGlow 1s ease infinite alternate; }
+  @keyframes cardGlow{ from{ box-shadow:0 14px 0 var(--shadow), 0 0 0 0 rgba(255,210,52,.0);} to{ box-shadow:0 14px 0 var(--shadow), 0 0 40px 10px rgba(255,210,52,.6);} }
+
+  /* ===== iPad 11インチ 横画面さいてきか（横長・低い画面） ===== */
+  @media (min-width:1000px) and (orientation:landscape){
+    :root{ --cube:clamp(128px, 14vw, 172px); --half:calc(var(--cube)/2); }
+
+    .shake-wrap{
+      display:grid;
+      grid-template-columns:minmax(330px, 31%) 1fr;
+      grid-template-rows:auto auto 1fr;
+      grid-template-areas:
+        "top      top"
+        "controls stage"
+        "history  stage";
+      height:100dvh; overflow:hidden;
+      column-gap:8px;
+    }
+
+    .topbar{ grid-area:top; padding:14px 22px 4px; }
+    .title{ font-size:26px; }
+
+    .controls{ grid-area:controls; padding:8px 18px 6px; align-items:stretch; }
+    .ctrl-row, .select-wrap, .custom-wrap{ max-width:none; }
+    .ctrl-label{ text-align:left; }
+    .ctrl-row{ justify-content:flex-start; }
+
+    .stage{
+      grid-area:stage; align-self:center; gap:30px;
+      padding:10px 24px; min-height:0;
+    }
+    .dice-area{ min-height:calc(var(--cube) + 80px); }
+    .jump-btn{ font-size:42px; padding:20px 64px; }
+
+    .history{
+      grid-area:history; overflow-y:auto; min-height:0;
+      margin:0; border-top:none; border-right:5px solid var(--ink);
+      padding:6px 16px 16px; background:rgba(255,255,255,.7);
+    }
+    .history h2{ position:sticky; top:0; background:rgba(255,255,255,.95);
+      padding:6px 0; margin:0 0 6px; }
+    .history-list{ max-width:none; }
+    .history-list li{ font-size:14px; padding:7px 10px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:.001s !important; animation-iteration-count:1 !important; }
+    .die-jumper.jumping{ animation:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-stars" id="bgStars" aria-hidden="true"></div>
+
+<div class="shake-wrap" id="shakeWrap">
+
+  <!-- 上部バー -->
+  <header class="topbar">
+    <div class="coin-box" id="coinBox">
+      <div class="coin">¥</div>
+      <div class="coin-num" id="coinNum">10</div>
+      <button class="coin-reset" id="coinReset" type="button">リセット</button>
+    </div>
+    <div class="title">わくわく<br>サイコロブロック</div>
+  </header>
+
+  <!-- コントロール -->
+  <section class="controls">
+    <div class="ctrl-row">
+      <div class="ctrl-label">サイコロの かず</div>
+      <button class="count-btn active" data-count="1" type="button">1こ</button>
+      <button class="count-btn" data-count="2" type="button">2こ</button>
+      <button class="count-btn" data-count="3" type="button">3こ</button>
+    </div>
+
+    <div class="select-wrap">
+      <select class="dice-select" id="diceSelect" aria-label="サイコロのしゅるい">
+        <option value="normal">① ノーマルダイス（1〜10）</option>
+        <option value="risk">② リスクダイス（-3枚・1・8・9・10）</option>
+        <option value="custom">③ カスタムお題ダイス</option>
+      </select>
+    </div>
+
+    <div class="custom-wrap" id="customWrap">
+      <label for="customInput">お題を カンマ（,）で くぎって いれてね</label>
+      <div class="custom-row">
+        <input class="custom-input" id="customInput" type="text"
+               value="中野坂上, 新宿, 大江戸線, 双子, 給食, 大当たり" />
+        <button class="custom-apply" id="customApply" type="button">はんえい</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- サイコロ ステージ -->
+  <main class="stage">
+    <div class="dice-area" id="diceArea" aria-live="polite"></div>
+    <button class="jump-btn" id="jumpBtn" type="button">
+      <span class="arrow">▲</span> JUMP!
+    </button>
+  </main>
+
+  <!-- 履歴 -->
+  <section class="history">
+    <h2>★ さいきんの けっか ★</h2>
+    <ul class="history-list" id="historyList">
+      <li class="history-empty">まだ ふっていないよ。JUMP！を おしてね</li>
+    </ul>
+  </section>
+
+</div>
+
+<!-- 結果ポップアップ -->
+<div class="result-overlay" id="resultOverlay">
+  <div class="result-card" id="resultCard">
+    <div class="result-head" id="resultHead">けっか はっぴょう！</div>
+    <div class="result-faces" id="resultFaces"></div>
+    <div class="result-total" id="resultTotal"></div>
+    <div class="result-hint">タップで とじる</div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   音づくり（Web Audio API）— 音声ファイルは使いません
+   ========================================================= */
+let audioCtx = null;
+function getCtx(){
+  if(!audioCtx){
+    try{ audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+    catch(e){ audioCtx = null; }
+  }
+  if(audioCtx && audioCtx.state === 'suspended'){ audioCtx.resume(); }
+  return audioCtx;
+}
+function tone(freq, dur, type='square', vol=0.15, when=0){
+  const ctx = getCtx(); if(!ctx) return;
+  const t = ctx.currentTime + when;
+  const o = ctx.createOscillator();
+  const g = ctx.createGain();
+  o.type = type; o.frequency.value = freq;
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.linearRampToValueAtTime(vol, t + 0.012);
+  g.gain.exponentialRampToValueAtTime(0.0008, t + dur);
+  o.connect(g); g.connect(ctx.destination);
+  o.start(t); o.stop(t + dur + 0.02);
+}
+// サイコロの回転音（ピコ）
+let lastTick = 0;
+function sndTick(){
+  const now = Date.now();
+  if(now - lastTick < 55) return;   // 鳴りすぎ防止
+  lastTick = now;
+  tone(640 + Math.random()*420, 0.05, 'square', 0.08);
+}
+// 跳ねる音（ポヨン）
+function sndPoyon(){
+  const ctx = getCtx(); if(!ctx) return;
+  const t = ctx.currentTime;
+  const o = ctx.createOscillator();
+  const g = ctx.createGain();
+  o.type = 'sine';
+  o.frequency.setValueAtTime(200, t);
+  o.frequency.exponentialRampToValueAtTime(620, t + 0.09);
+  o.frequency.exponentialRampToValueAtTime(160, t + 0.26);
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.linearRampToValueAtTime(0.22, t + 0.02);
+  g.gain.exponentialRampToValueAtTime(0.0008, t + 0.3);
+  o.connect(g); g.connect(ctx.destination);
+  o.start(t); o.stop(t + 0.32);
+}
+// 着地音（ドスッ）
+function sndThud(){
+  const ctx = getCtx(); if(!ctx) return;
+  const t = ctx.currentTime;
+  const o = ctx.createOscillator();
+  const g = ctx.createGain();
+  o.type = 'sine';
+  o.frequency.setValueAtTime(130, t);
+  o.frequency.exponentialRampToValueAtTime(42, t + 0.18);
+  g.gain.setValueAtTime(0.35, t);
+  g.gain.exponentialRampToValueAtTime(0.0008, t + 0.2);
+  o.connect(g); g.connect(ctx.destination);
+  o.start(t); o.stop(t + 0.22);
+}
+// 良い結果のファンファーレ（テッテレー）
+function sndFanfare(){
+  const seq = [523.25, 659.25, 783.99, 1046.50];
+  seq.forEach((f,i)=> tone(f, 0.18, 'triangle', 0.2, i*0.085));
+  const chord = [523.25, 659.25, 783.99, 1046.50];
+  chord.forEach(f => tone(f, 0.6, 'triangle', 0.11, seq.length*0.085));
+}
+// 残念な音（ブブー）
+function sndSad(){
+  tone(196.00, 0.22, 'sawtooth', 0.16, 0);
+  tone(146.83, 0.34, 'sawtooth', 0.16, 0.16);
+}
+
+/* =========================================================
+   サイコロのデータ
+   ========================================================= */
+const DICE = {
+  normal: {
+    faces(){ return [1,2,3,4,5,6,7,8,9,10].map(n => ({label:String(n), value:n, coin:0, bad:false})); }
+  },
+  risk: {
+    faces(){
+      return [
+        {label:'-3枚', value:0, coin:-3, bad:true},
+        {label:'-3枚', value:0, coin:-3, bad:true},
+        {label:'1',  value:1,  coin:0, bad:false},
+        {label:'8',  value:8,  coin:0, bad:false},
+        {label:'9',  value:9,  coin:0, bad:false},
+        {label:'10', value:10, coin:0, bad:false},
+      ];
+    }
+  },
+  custom: {
+    faces(){
+      const raw = document.getElementById('customInput').value;
+      let items = raw.split(',').map(s => s.trim()).filter(s => s.length > 0);
+      if(items.length === 0) items = ['？'];
+      return items.map(txt => {
+        const num = Number(txt);
+        const isNum = txt !== '' && !isNaN(num);
+        return { label:txt, value:isNum ? num : null, coin:0, bad:false };
+      });
+    }
+  }
+};
+
+/* =========================================================
+   状態
+   ========================================================= */
+let diceCount = 1;
+let diceType = 'normal';
+let coins = 10;
+let rolling = false;
+const history = [];
+
+const diceArea   = document.getElementById('diceArea');
+const jumpBtn    = document.getElementById('jumpBtn');
+const coinNum    = document.getElementById('coinNum');
+const coinBox    = document.getElementById('coinBox');
+const shakeWrap  = document.getElementById('shakeWrap');
+const customWrap = document.getElementById('customWrap');
+
+/* =========================================================
+   サイコロ（キューブ）をつくる
+   ========================================================= */
+function makeCube(){
+  const jumper = document.createElement('div');
+  jumper.className = 'die-jumper';
+
+  const cube = document.createElement('div');
+  cube.className = 'cube idle-rot';
+
+  const order = ['front','back','right','left','top','bottom'];
+  order.forEach(side => {
+    const face = document.createElement('div');
+    face.className = 'face f-' + side;
+    face.innerHTML =
+      '<span class="corner c1"></span><span class="corner c2"></span>' +
+      '<span class="corner c3"></span><span class="corner c4"></span>' +
+      '<span class="pip">?</span>';
+    cube.appendChild(face);
+  });
+
+  jumper.appendChild(cube);
+
+  const wrap = document.createElement('div');
+  wrap.appendChild(jumper);
+  const shadow = document.createElement('div');
+  shadow.className = 'die-shadow';
+  wrap.appendChild(shadow);
+
+  wrap._jumper = jumper;
+  wrap._cube = cube;
+  wrap._faces = cube.querySelectorAll('.pip');
+  return wrap;
+}
+
+function fitFont(pip, text){
+  // 文字数におうじて読みやすいサイズに
+  const len = [...text].length;
+  let size;
+  if(len <= 2) size = 'clamp(30px,8vw,52px)';
+  else if(len <= 4) size = 'clamp(15px,4.5vw,26px)';
+  else if(len <= 7) size = 'clamp(11px,3.4vw,18px)';
+  else size = 'clamp(9px,2.8vw,14px)';
+  pip.style.fontSize = size;
+  pip.textContent = text;
+}
+
+function buildDice(){
+  diceArea.innerHTML = '';
+  diceArea._dice = [];
+  for(let i=0; i<diceCount; i++){
+    const d = makeCube();
+    diceArea.appendChild(d);
+    diceArea._dice.push(d);
+  }
+  // 待機中の見た目に
+  const faces = DICE[diceType].faces();
+  diceArea._dice.forEach((d, idx) => {
+    const f = faces[idx % faces.length] || faces[0];
+    d._faces.forEach(p => fitFont(p, f.label));
+  });
+}
+
+/* =========================================================
+   サイコロを振る（JUMP）
+   ========================================================= */
+function rollAll(){
+  if(rolling) return;
+  rolling = true;
+  jumpBtn.disabled = true;
+
+  const faceSet = DICE[diceType].faces();
+  const dice = diceArea._dice;
+  const results = [];
+  let landedCount = 0;
+
+  dice.forEach((d, i) => {
+    const delay = i * 250;           // 0.25秒ずつ ずらして跳ねる
+    const chosen = faceSet[Math.floor(Math.random() * faceSet.length)];
+    results[i] = chosen;
+
+    setTimeout(() => {
+      sndPoyon();
+      d._cube.classList.remove('idle-rot');
+      d._cube.classList.add('spinning');
+      d._jumper.classList.add('jumping');
+
+      // 空中で目をパラパラ切りかえる
+      const cyc = setInterval(() => {
+        const r = faceSet[Math.floor(Math.random() * faceSet.length)];
+        d._faces.forEach(p => fitFont(p, r.label));
+        sndTick();
+      }, 70);
+
+      // 着地の少し前に目を確定
+      setTimeout(() => {
+        clearInterval(cyc);
+        d._cube.classList.remove('spinning');
+        d._cube.style.transform = 'rotateX(-16deg) rotateY(-18deg)';
+        d._faces.forEach(p => fitFont(p, chosen.label));
+      }, 640);
+
+      // 着地：ドスッ＋画面シェイク
+      setTimeout(() => {
+        d._jumper.classList.remove('jumping');
+        sndThud();
+        triggerShake();
+        landedCount++;
+        if(landedCount === dice.length){
+          setTimeout(() => finishRoll(results), 250);
+        }
+      }, 840);
+
+    }, delay);
+  });
+}
+
+function triggerShake(){
+  shakeWrap.classList.remove('shake');
+  void shakeWrap.offsetWidth;   // リフロー
+  shakeWrap.classList.add('shake');
+}
+
+/* =========================================================
+   結果のしめくくり
+   ========================================================= */
+function finishRoll(results){
+  // 合計（数えられる目だけ）
+  const numeric = results.filter(r => r.value !== null && r.value !== undefined);
+  const hasTotal = numeric.length > 0;
+  const total = numeric.reduce((s,r) => s + r.value, 0);
+
+  // ゾロ目判定（2こ以上で すべて同じラベル）
+  const labels = results.map(r => r.label);
+  const isZoro = results.length >= 2 && labels.every(l => l === labels[0]);
+
+  // コイン処理
+  const coinDelta = results.reduce((s,r) => s + (r.coin || 0), 0);
+  const anyBad = results.some(r => r.bad);
+  if(coinDelta !== 0){
+    coins = Math.max(0, coins + coinDelta);
+    updateCoins(coinDelta < 0);
+  }
+
+  const isBig = (hasTotal && total >= 10) || isZoro;
+
+  // 音
+  if(anyBad){ sndSad(); }
+  if(isBig){ setTimeout(sndFanfare, anyBad ? 450 : 60); }
+
+  showResult(results, hasTotal, total, isZoro, isBig);
+  addHistory(results, hasTotal, total, isZoro);
+
+  if(isBig){ celebrate(isZoro); }
+
+  rolling = false;
+  jumpBtn.disabled = false;
+}
+
+function updateCoins(isLose){
+  coinNum.textContent = coins;
+  coinNum.classList.remove('bump'); void coinNum.offsetWidth; coinNum.classList.add('bump');
+  if(isLose){
+    coinBox.classList.remove('lose'); void coinBox.offsetWidth; coinBox.classList.add('lose');
+  }
+}
+
+/* =========================================================
+   結果ポップアップ
+   ========================================================= */
+const overlay   = document.getElementById('resultOverlay');
+const card      = document.getElementById('resultCard');
+const headEl    = document.getElementById('resultHead');
+const facesEl   = document.getElementById('resultFaces');
+const totalEl   = document.getElementById('resultTotal');
+let hideTimer = null;
+
+function showResult(results, hasTotal, total, isZoro, isBig){
+  facesEl.innerHTML = '';
+  results.forEach((r, i) => {
+    const chip = document.createElement('span');
+    chip.className = 'result-chip' + (r.bad ? ' bad' : '');
+    chip.textContent = r.label;
+    chip.style.animationDelay = (i*0.08) + 's';
+    facesEl.appendChild(chip);
+  });
+
+  if(isZoro){ headEl.textContent = 'ゾロ目だ！すごい！'; }
+  else if(isBig){ headEl.textContent = '大当たり！やったね！'; }
+  else { headEl.textContent = 'けっか はっぴょう！'; }
+
+  if(hasTotal && results.length >= 1){
+    const big = total >= 10 ? ' big' : '';
+    totalEl.innerHTML = '<small>ごうけい</small><span class="'+big.trim()+'">' + total + '</span>';
+    totalEl.style.display = 'block';
+  }else{
+    totalEl.style.display = 'none';
+  }
+
+  card.classList.toggle('celebrate', isBig);
+  overlay.classList.add('show');
+
+  clearTimeout(hideTimer);
+  hideTimer = setTimeout(hideResult, 3200);
+}
+function hideResult(){
+  overlay.classList.remove('show');
+  card.classList.remove('celebrate');
+}
+overlay.addEventListener('click', hideResult);
+
+/* =========================================================
+   紙吹雪
+   ========================================================= */
+function celebrate(isZoro){
+  if(typeof confetti !== 'function') return;
+  const burst = (opts) => confetti(Object.assign({
+    particleCount: 90, spread: 75, startVelocity: 45, ticks: 220,
+    colors: ['#ff5a5f','#ffd234','#3aa0ff','#5ccb63','#9b7bff','#ffffff'],
+    zIndex: 60
+  }, opts));
+  burst({ origin:{ x:0.2, y:0.7 }, angle:60 });
+  burst({ origin:{ x:0.8, y:0.7 }, angle:120 });
+  setTimeout(() => burst({ origin:{ x:0.5, y:0.4 }, particleCount:140, spread:120 }), 150);
+  if(isZoro){
+    setTimeout(() => burst({ origin:{ x:0.5, y:0.5 }, particleCount:160, spread:160, startVelocity:55 }), 400);
+  }
+}
+
+/* =========================================================
+   履歴
+   ========================================================= */
+const historyList = document.getElementById('historyList');
+function addHistory(results, hasTotal, total, isZoro){
+  history.unshift({ labels: results.map(r=>r.label), hasTotal, total, isZoro });
+  if(history.length > 12) history.pop();
+  renderHistory();
+}
+function renderHistory(){
+  if(history.length === 0){
+    historyList.innerHTML = '<li class="history-empty">まだ ふっていないよ。JUMP！を おしてね</li>';
+    return;
+  }
+  historyList.innerHTML = '';
+  history.forEach((h, i) => {
+    const li = document.createElement('li');
+    li.style.animationDelay = (i*0.03) + 's';
+    const facesTxt = h.labels.join('  /  ') + (h.isZoro ? '  ✨ゾロ目' : '');
+    const totalTxt = h.hasTotal ? ('ごうけい ' + h.total) : '';
+    li.innerHTML =
+      '<span class="h-num">' + (i+1) + '</span>' +
+      '<span class="h-faces">' + escapeHtml(facesTxt) + '</span>' +
+      (totalTxt ? '<span class="h-total">' + totalTxt + '</span>' : '');
+    historyList.appendChild(li);
+  });
+}
+function escapeHtml(s){
+  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* =========================================================
+   コントロールの操作
+   ========================================================= */
+document.querySelectorAll('.count-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if(rolling) return;
+    getCtx();
+    document.querySelectorAll('.count-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    diceCount = Number(btn.dataset.count);
+    buildDice();
+    tone(880, 0.07, 'square', 0.1);
+  });
+});
+
+const diceSelect = document.getElementById('diceSelect');
+diceSelect.addEventListener('change', () => {
+  if(rolling){ diceSelect.value = diceType; return; }
+  diceType = diceSelect.value;
+  customWrap.classList.toggle('show', diceType === 'custom');
+  buildDice();
+  tone(700, 0.07, 'triangle', 0.1);
+});
+
+document.getElementById('customApply').addEventListener('click', () => {
+  if(rolling) return;
+  buildDice();
+  tone(660, 0.1, 'triangle', 0.12);
+  tone(880, 0.1, 'triangle', 0.12, 0.08);
+});
+
+document.getElementById('coinReset').addEventListener('click', () => {
+  coins = 10;
+  updateCoins(false);
+  tone(523, 0.08, 'triangle', 0.12);
+  tone(784, 0.12, 'triangle', 0.12, 0.07);
+});
+
+jumpBtn.addEventListener('click', () => {
+  getCtx();      // 最初のタップで音を有効化
+  rollAll();
+});
+
+/* =========================================================
+   背景の星
+   ========================================================= */
+(function initStars(){
+  const box = document.getElementById('bgStars');
+  const marks = ['★','☆','✦','●'];
+  for(let i=0;i<10;i++){
+    const s = document.createElement('span');
+    s.textContent = marks[i % marks.length];
+    s.style.left = Math.random()*100 + '%';
+    s.style.top  = Math.random()*100 + '%';
+    s.style.color = ['#ffffff','#ffe98a','#bfe6ff'][i%3];
+    s.style.animationDuration = (5 + Math.random()*5) + 's';
+    s.style.animationDelay = (-Math.random()*5) + 's';
+    box.appendChild(s);
+  }
+})();
+
+/* 初期化 */
+buildDice();
+</script>
+</body>
+</html>
