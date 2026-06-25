@@ -33,6 +33,12 @@
     --shadow:rgba(39,49,90,.22);
     --cube:clamp(82px, 21vw, 124px);
     --half:calc(var(--cube)/2);
+    /* サイコロの色（えらべる：あお がデフォルト） */
+    --die-light:#7fc0ff;
+    --die-main:#3aa0ff;
+    --die-deep:#1f74e0;
+    --die-edge:#1357b0;
+    --die-pip:#1f74e0;
   }
 
   *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
@@ -149,6 +155,24 @@
     box-shadow:0 5px 0 #b07e00;
   }
 
+  /* サイコロの いろ えらび */
+  .color-row{ display:flex; gap:12px; justify-content:center; align-items:center; flex-wrap:wrap; }
+  .color-swatch{
+    width:48px; height:48px; border-radius:50%; cursor:pointer; position:relative;
+    border:4px solid #fff; box-shadow:0 4px 0 var(--shadow), 0 0 0 3px rgba(39,49,90,.18);
+    transition:transform .1s;
+  }
+  .color-swatch:active{ transform:scale(.92); }
+  .color-swatch.red{ background:radial-gradient(circle at 35% 30%, #ff9a9d, #e8403a); }
+  .color-swatch.blue{ background:radial-gradient(circle at 35% 30%, #9cccff, #1f74e0); }
+  .color-swatch.yellow{ background:radial-gradient(circle at 35% 30%, #fff0a8, #f0a800); }
+  .color-swatch.green{ background:radial-gradient(circle at 35% 30%, #b6f08f, #36a93f); }
+  .color-swatch.active{ box-shadow:0 4px 0 var(--shadow), 0 0 0 4px var(--ink); }
+  .color-swatch.active::after{
+    content:"✓"; position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    color:#fff; font-family:'Mochiy Pop P One'; font-size:22px; text-shadow:0 1px 2px rgba(0,0,0,.4);
+  }
+
   .select-wrap{ position:relative; width:100%; max-width:640px; }
   .dice-select{
     width:100%; -webkit-appearance:none; appearance:none;
@@ -223,22 +247,24 @@
     position:absolute; width:var(--cube); height:var(--cube);
     display:flex; align-items:center; justify-content:center;
     padding:9%;
-    background:linear-gradient(160deg, #5cb3ff 0%, var(--blue) 55%, var(--blue-deep) 100%);
+    background:linear-gradient(160deg, var(--die-light) 0%, var(--die-main) 55%, var(--die-deep) 100%);
     border-radius:16%;
-    box-shadow:inset 0 0 0 3px #1357b0, inset 0 -6px 8px rgba(0,0,0,.18);
+    box-shadow:inset 0 0 0 3px var(--die-edge), inset 0 -6px 8px rgba(0,0,0,.18);
     backface-visibility:visible;
+    transition:background .25s, box-shadow .25s;
   }
   .face .pip{
     width:100%; height:100%;
-    background:linear-gradient(180deg,#ffffff,#eaf4ff);
+    background:linear-gradient(180deg,#ffffff,#f3f7ff);
     border-radius:18%;
     display:flex; align-items:center; justify-content:center;
     font-family:'Mochiy Pop P One';
-    color:var(--blue-deep);
+    color:var(--die-pip);
     line-height:1; text-align:center;
-    box-shadow:inset 0 3px 0 #fff, inset 0 -4px 6px rgba(31,116,224,.18);
+    box-shadow:inset 0 3px 0 #fff, inset 0 -4px 6px rgba(0,0,0,.12);
     overflow:hidden; padding:4px;
     word-break:break-word;
+    transition:color .25s;
   }
   /* 四隅の星かざり */
   .face .corner{ position:absolute; width:13%; height:13%; background:var(--yellow);
@@ -317,47 +343,186 @@
   .result-total .big{ color:var(--green-deep); }
   .result-hint{ margin-top:14px; font-size:13px; color:var(--ink-soft); font-weight:700; }
 
-  /* ===== 履歴 ===== */
-  .history{
-    background:rgba(255,255,255,.78); margin:6px 0 0;
-    border-top:5px solid var(--ink);
-    padding:14px 16px 26px;
-  }
-  .history h2{
-    font-family:'Mochiy Pop P One'; font-size:16px; color:var(--ink-soft);
-    margin:0 0 10px; text-align:center;
-  }
-  .history-list{ list-style:none; margin:0 auto; padding:0; max-width:560px; display:flex; flex-direction:column; gap:8px; }
-  .history-list li{
-    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
-    background:#fff; border:3px solid #cdd6f0; border-radius:14px;
-    padding:8px 12px; font-weight:700; animation:slideIn .3s backwards;
-  }
-  @keyframes slideIn{ from{ transform:translateX(-12px); opacity:0; } to{ transform:translateX(0); opacity:1; } }
-  .history-list .h-num{
-    font-family:'Mochiy Pop P One'; color:#fff; background:var(--purple);
-    width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px;
-  }
-  .history-list .h-faces{ color:var(--blue-deep); }
-  .history-list .h-total{ margin-left:auto; font-family:'Mochiy Pop P One'; color:var(--green-deep); }
-  .history-empty{ text-align:center; color:var(--ink-soft); font-weight:700; padding:10px; }
-
   /* リーチ・大当たり用の光るリング */
   .result-card.celebrate{ animation:cardGlow 1s ease infinite alternate; }
   @keyframes cardGlow{ from{ box-shadow:0 14px 0 var(--shadow), 0 0 0 0 rgba(255,210,52,.0);} to{ box-shadow:0 14px 0 var(--shadow), 0 0 40px 10px rgba(255,210,52,.6);} }
+
+  .result-earn{
+    margin-top:10px; font-family:'Mochiy Pop P One'; font-size:clamp(16px,4vw,22px);
+    color:var(--yellow-deep);
+  }
+  .result-earn.minus{ color:var(--red-deep); }
+
+  /* ===== ごほうび（ガチャ・コレクション）ボタン ===== */
+  .reward-row{ display:flex; gap:10px; width:100%; max-width:640px; flex-wrap:wrap; }
+  .reward-btn{
+    flex:1; min-width:150px;
+    font-family:'Mochiy Pop P One'; font-size:clamp(14px,3.6vw,17px);
+    padding:13px 12px; border-radius:18px; cursor:pointer; color:#fff;
+    display:flex; flex-direction:column; align-items:center; gap:2px; line-height:1.15;
+    border:4px solid; transition:transform .08s, box-shadow .08s, filter .1s;
+  }
+  .reward-btn small{ font-size:.74em; opacity:.95; }
+  .reward-btn.gacha{ background:linear-gradient(180deg,#ffb14d,#ff8a1e); border-color:#c25e00; box-shadow:0 5px 0 #c25e00; }
+  .reward-btn.collection{ background:linear-gradient(180deg,#b48bff,var(--purple)); border-color:#6b46c9; box-shadow:0 5px 0 #6b46c9; }
+  .reward-btn:active{ transform:translateY(3px); box-shadow:0 2px 0 #6b46c9; }
+  .reward-btn.gacha:active{ box-shadow:0 2px 0 #c25e00; }
+  .reward-btn:disabled{ filter:grayscale(.55) brightness(.97); cursor:default; }
+
+  /* ===== ガチャ ポップアップ ===== */
+  .gacha-overlay{
+    position:fixed; inset:0; z-index:45; display:flex; align-items:center; justify-content:center;
+    background:rgba(20,26,54,.62); backdrop-filter:blur(3px);
+    opacity:0; pointer-events:none; transition:opacity .25s; padding:18px;
+  }
+  .gacha-overlay.show{ opacity:1; pointer-events:auto; }
+  .gacha-stage{ text-align:center; position:relative; width:min(420px,94vw); }
+
+  /* 光のレイ（レア演出） */
+  .gacha-rays{
+    position:absolute; inset:-40% ; margin:auto; width:140%; height:140%;
+    left:50%; top:50%; transform:translate(-50%,-50%) scale(.2);
+    background:repeating-conic-gradient(from 0deg, rgba(255,255,255,.0) 0deg 8deg, rgba(255,255,255,.55) 8deg 16deg);
+    border-radius:50%; opacity:0; pointer-events:none; z-index:0;
+    -webkit-mask-image:radial-gradient(circle, #000 30%, transparent 72%);
+    mask-image:radial-gradient(circle, #000 30%, transparent 72%);
+  }
+  .gacha-rays.go{ animation:raysIn .5s ease forwards, raysSpin 9s linear infinite; }
+  .gacha-rays.gold{ background:repeating-conic-gradient(from 0deg, rgba(255,215,80,0) 0deg 7deg, rgba(255,205,40,.75) 7deg 14deg); }
+  @keyframes raysIn{ to{ opacity:.9; transform:translate(-50%,-50%) scale(1); } }
+  @keyframes raysSpin{ to{ transform:translate(-50%,-50%) rotate(360deg); } }
+
+  /* ガチャマシン */
+  .machine{ width:200px; margin:0 auto; position:relative; z-index:1; }
+  .machine.hide{ display:none; }
+  .machine.shaking{ animation:capShake .42s ease-in-out infinite; transform-origin:50% 90%; }
+  @keyframes capShake{
+    0%,100%{ transform:rotate(-2.5deg); } 50%{ transform:rotate(2.5deg); }
+  }
+  .machine.charging{ animation:capCharge .25s ease-in-out infinite; }
+  @keyframes capCharge{ 0%,100%{ transform:translateY(0) scale(1);} 50%{ transform:translateY(-3px) scale(1.03);} }
+  .m-dome{
+    height:130px; border-radius:50% 50% 14% 14%;
+    background:radial-gradient(circle at 38% 30%, rgba(255,255,255,.9), rgba(255,255,255,.25) 40%, rgba(150,200,255,.35) 70%);
+    border:5px solid #2b3566; position:relative; overflow:hidden;
+    box-shadow:inset 0 -10px 18px rgba(60,90,160,.35);
+  }
+  .m-dome::before{ /* 中のカプセルたち */
+    content:"🔴🟡🔵🟢🟠"; position:absolute; bottom:6px; left:0; right:0; text-align:center;
+    font-size:34px; letter-spacing:-4px; filter:saturate(1.2);
+  }
+  .m-body{
+    height:74px; margin-top:-6px; border-radius:0 0 20px 20px;
+    background:linear-gradient(180deg,#ff6b70, var(--red-deep));
+    border:5px solid #2b3566; border-top:none; position:relative;
+    box-shadow:inset 0 6px 0 rgba(255,255,255,.25);
+  }
+  .m-knob{
+    position:absolute; top:14px; left:50%; transform:translateX(-50%);
+    width:34px; height:34px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #fff, #ffd234 55%, #f5b400);
+    border:4px solid #2b3566;
+  }
+  .machine.shaking .m-knob{ animation:knobSpin .42s linear infinite; }
+  @keyframes knobSpin{ to{ transform:translateX(-50%) rotate(360deg); } }
+  .m-slot{ position:absolute; bottom:12px; left:50%; transform:translateX(-50%); width:74px; height:18px; background:#2b3566; border-radius:6px; }
+
+  /* 出てくるアイテムカード */
+  .gacha-item{
+    display:none; position:relative; z-index:1;
+    background:var(--panel); border:6px solid var(--ink); border-radius:30px;
+    padding:18px 28px 16px; box-shadow:0 14px 0 var(--shadow), 0 22px 44px rgba(0,0,0,.34);
+  }
+  .gacha-item.show{ display:block; animation:itemPop .55s cubic-bezier(.2,1.7,.45,1); }
+  @keyframes itemPop{ 0%{ transform:scale(.2) rotate(-25deg); } 60%{ transform:scale(1.12) rotate(4deg);} 100%{ transform:scale(1) rotate(0); } }
+  .gi-rarity{ font-family:'Mochiy Pop P One'; font-size:18px; margin-bottom:2px; letter-spacing:1px; }
+  .gi-stars{ font-size:16px; margin-bottom:6px; letter-spacing:2px; }
+  .gi-rarity.n{ color:var(--blue-deep); } .gi-stars.n{ color:var(--blue); }
+  .gi-rarity.r{ color:#8a52ff; } .gi-stars.r{ color:var(--purple); }
+  .gi-rarity.s{ background:linear-gradient(90deg,#ff5a5f,#ffd234,#5ccb63,#3aa0ff,#9b7bff); -webkit-background-clip:text; background-clip:text; color:transparent; animation:hue 2s linear infinite; }
+  .gi-stars.s{ color:#ffb800; }
+  @keyframes hue{ to{ filter:hue-rotate(360deg); } }
+  .gi-emoji{ font-size:clamp(76px,19vw,118px); line-height:1; margin:2px 0; animation:itemFloat 2.4s ease-in-out infinite; filter:drop-shadow(0 8px 10px rgba(0,0,0,.22)); }
+  @keyframes itemFloat{ 0%,100%{ transform:translateY(0) rotate(-4deg);} 50%{ transform:translateY(-12px) rotate(4deg);} }
+  .gi-name{ font-family:'Mochiy Pop P One'; font-size:clamp(20px,5vw,28px); color:var(--ink); }
+  .gi-dup{ margin-top:4px; font-weight:800; color:var(--ink-soft); font-size:14px; min-height:18px; }
+  .gi-new{ display:inline-block; background:var(--red); color:#fff; font-family:'Mochiy Pop P One'; font-size:13px;
+    padding:3px 10px; border-radius:999px; margin-top:6px; box-shadow:0 3px 0 #b8261f; animation:newPop .4s .2s backwards; }
+  @keyframes newPop{ from{ transform:scale(0) rotate(-15deg);} to{ transform:scale(1);} }
+  .gacha-actions{ display:flex; gap:10px; justify-content:center; margin-top:14px; }
+  .gbtn{ font-family:'Mochiy Pop P One'; font-size:15px; padding:11px 18px; border-radius:16px; cursor:pointer; color:#fff; border:4px solid; }
+  .gbtn.again{ background:linear-gradient(180deg,#ffb14d,#ff8a1e); border-color:#c25e00; box-shadow:0 4px 0 #c25e00; }
+  .gbtn.again:disabled{ filter:grayscale(.5) brightness(.97); cursor:default; }
+  .gbtn.again:not(:disabled):active{ transform:translateY(2px); box-shadow:0 2px 0 #c25e00; }
+  .gbtn.done{ background:linear-gradient(180deg,#7fc4ff,var(--blue)); border-color:var(--blue-deep); box-shadow:0 4px 0 var(--blue-deep); }
+  .gbtn.done:active{ transform:translateY(2px); box-shadow:0 2px 0 var(--blue-deep); }
+
+  /* ===== コレクション（ごほうび ずかん） ===== */
+  .coll-overlay{
+    position:fixed; inset:0; z-index:50; display:flex; align-items:center; justify-content:center;
+    background:rgba(20,26,54,.5); backdrop-filter:blur(3px);
+    opacity:0; pointer-events:none; transition:opacity .25s; padding:16px;
+  }
+  .coll-overlay.show{ opacity:1; pointer-events:auto; }
+  .coll-card{
+    background:linear-gradient(180deg,#fff,#eef4ff); border:6px solid var(--ink); border-radius:28px;
+    padding:16px 18px 20px; width:min(660px,94vw); max-height:88dvh; overflow:auto;
+    box-shadow:0 14px 0 var(--shadow), 0 22px 44px rgba(0,0,0,.34);
+  }
+  .coll-head{ display:flex; align-items:center; justify-content:space-between; gap:10px;
+    position:sticky; top:-16px; background:linear-gradient(180deg,#fff,#fff 70%,rgba(255,255,255,0));
+    padding:6px 0 8px; margin-bottom:4px; }
+  .coll-head span{ font-family:'Mochiy Pop P One'; font-size:clamp(18px,4.5vw,22px); color:var(--ink); }
+  .coll-close{ border:none; background:var(--red); color:#fff; font-family:'Mochiy Pop P One';
+    font-size:14px; padding:8px 16px; border-radius:999px; cursor:pointer; box-shadow:0 3px 0 #b8261f; }
+  .coll-close:active{ transform:translateY(2px); box-shadow:0 1px 0 #b8261f; }
+  .coll-progress{ margin:2px 0 14px; }
+  .coll-sub{ font-weight:800; color:var(--ink-soft); margin-bottom:6px; font-size:14px; }
+  .coll-bar{ height:18px; background:#dfe6f6; border:3px solid var(--ink); border-radius:999px; overflow:hidden; }
+  .coll-bar-fill{ height:100%; width:0%; border-radius:999px; transition:width .5s cubic-bezier(.3,1.4,.5,1);
+    background:linear-gradient(90deg,var(--green),#9be86b); }
+  .coll-complete{ display:none; text-align:center; font-family:'Mochiy Pop P One'; color:var(--green-deep);
+    background:#eafff0; border:3px dashed var(--green-deep); border-radius:14px; padding:8px; margin-bottom:12px; }
+  .coll-complete.show{ display:block; animation:bump .5s ease; }
+
+  .coll-section{ margin-bottom:14px; }
+  .coll-section-title{ font-family:'Mochiy Pop P One'; font-size:14px; margin:0 0 8px; display:flex; align-items:center; gap:6px; }
+  .coll-section-title .st-n{ color:var(--blue-deep); } .coll-section-title .st-r{ color:var(--purple); } .coll-section-title .st-s{ color:#e09b00; }
+  .coll-grid{ display:grid; grid-template-columns:repeat(4, 1fr); gap:9px; }
+  @media (max-width:430px){ .coll-grid{ grid-template-columns:repeat(3, 1fr); } }
+  .coll-cell{
+    aspect-ratio:1/1.06; border-radius:16px; border:4px solid #c9d3ef; background:#fff;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;
+    position:relative; overflow:hidden;
+  }
+  .coll-cell.got.n{ background:linear-gradient(180deg,#eef6ff,#dcebff); border-color:var(--blue); }
+  .coll-cell.got.r{ background:linear-gradient(180deg,#f6efff,#e6d8ff); border-color:var(--purple); }
+  .coll-cell.got.s{ background:linear-gradient(135deg,#fff0f0,#fffae0,#eafbe9,#e8f3ff); border-color:#ffb800; }
+  .coll-cell.got.s::after{ content:""; position:absolute; inset:0;
+    background:linear-gradient(115deg, transparent 35%, rgba(255,255,255,.85) 50%, transparent 65%);
+    background-size:250% 100%; animation:shine 2.6s linear infinite; }
+  @keyframes shine{ 0%{ background-position:160% 0;} 100%{ background-position:-60% 0;} }
+  .coll-emoji{ font-size:clamp(30px,7.5vw,42px); line-height:1; z-index:1; }
+  .coll-cell.locked{ background:#eef1f8; }
+  .coll-cell.locked .coll-emoji{ filter:grayscale(1); opacity:.25; }
+  .coll-name{ font-size:11px; font-weight:800; color:var(--ink); z-index:1; text-align:center; padding:0 2px; }
+  .coll-cell.locked .coll-name{ color:#aab2cc; }
+  .coll-count{ position:absolute; top:3px; right:5px; font-family:'Mochiy Pop P One'; font-size:12px; color:var(--green-deep); z-index:2; }
+  .coll-newbadge{ position:absolute; top:3px; left:4px; background:var(--red); color:#fff; font-size:9px;
+    font-weight:800; padding:1px 5px; border-radius:999px; z-index:2; }
 
   /* ===== iPad 11インチ 横画面さいてきか（横長・低い画面） ===== */
   @media (min-width:1000px) and (orientation:landscape){
     :root{ --cube:clamp(128px, 14vw, 172px); --half:calc(var(--cube)/2); }
 
+
     .shake-wrap{
       display:grid;
-      grid-template-columns:minmax(330px, 31%) 1fr;
-      grid-template-rows:auto auto 1fr;
+      grid-template-columns:minmax(340px, 34%) 1fr;
+      grid-template-rows:auto 1fr;
       grid-template-areas:
         "top      top"
-        "controls stage"
-        "history  stage";
+        "controls stage";
       height:100dvh; overflow:hidden;
       column-gap:8px;
     }
@@ -365,10 +530,12 @@
     .topbar{ grid-area:top; padding:14px 22px 4px; }
     .title{ font-size:26px; }
 
-    .controls{ grid-area:controls; padding:8px 18px 6px; align-items:stretch; }
-    .ctrl-row, .select-wrap, .custom-wrap{ max-width:none; }
+    .controls{ grid-area:controls; padding:12px 18px; align-items:stretch; align-self:start;
+      overflow-y:auto; min-height:0; border-right:5px solid var(--ink); background:rgba(255,255,255,.55); }
+    .ctrl-row, .select-wrap, .custom-wrap, .reward-row{ max-width:none; }
     .ctrl-label{ text-align:left; }
     .ctrl-row{ justify-content:flex-start; }
+    .color-row{ justify-content:flex-start; }
 
     .stage{
       grid-area:stage; align-self:center; gap:30px;
@@ -376,16 +543,6 @@
     }
     .dice-area{ min-height:calc(var(--cube) + 80px); }
     .jump-btn{ font-size:42px; padding:20px 64px; }
-
-    .history{
-      grid-area:history; overflow-y:auto; min-height:0;
-      margin:0; border-top:none; border-right:5px solid var(--ink);
-      padding:6px 16px 16px; background:rgba(255,255,255,.7);
-    }
-    .history h2{ position:sticky; top:0; background:rgba(255,255,255,.95);
-      padding:6px 0; margin:0 0 6px; }
-    .history-list{ max-width:none; }
-    .history-list li{ font-size:14px; padding:7px 10px; }
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -419,11 +576,22 @@
       <button class="count-btn" data-count="3" type="button">3こ</button>
     </div>
 
+    <div class="ctrl-row">
+      <div class="ctrl-label">サイコロの いろ</div>
+      <div class="color-row">
+        <div class="color-swatch red"    data-color="red"    role="button" aria-label="あか"></div>
+        <div class="color-swatch blue active" data-color="blue" role="button" aria-label="あお"></div>
+        <div class="color-swatch yellow" data-color="yellow" role="button" aria-label="きいろ"></div>
+        <div class="color-swatch green"  data-color="green"  role="button" aria-label="みどり"></div>
+      </div>
+    </div>
+
     <div class="select-wrap">
       <select class="dice-select" id="diceSelect" aria-label="サイコロのしゅるい">
         <option value="normal">① ノーマルダイス（1〜10）</option>
-        <option value="risk">② リスクダイス（-3枚・1・8・9・10）</option>
-        <option value="custom">③ カスタムお題ダイス</option>
+        <option value="coin">② コインダイス（コインが もらえる）</option>
+        <option value="minus">③ −コインダイス（コインが へる）</option>
+        <option value="custom">④ カスタムお題ダイス</option>
       </select>
     </div>
 
@@ -431,9 +599,18 @@
       <label for="customInput">お題を カンマ（,）で くぎって いれてね</label>
       <div class="custom-row">
         <input class="custom-input" id="customInput" type="text"
-               value="中野坂上, 新宿, 大江戸線, 双子, 給食, 大当たり" />
+               value="ジャンプ, へんがお, ものまね, ありがとう, だいすきなもの, あたり" />
         <button class="custom-apply" id="customApply" type="button">はんえい</button>
       </div>
+    </div>
+
+    <div class="reward-row">
+      <button class="reward-btn gacha" id="gachaBtn" type="button">
+        🎁 ガチャをまわす <small>10まい</small>
+      </button>
+      <button class="reward-btn collection" id="collectionBtn" type="button">
+        📒 なかま ずかん <small id="collCount">0／30</small>
+      </button>
     </div>
   </section>
 
@@ -445,14 +622,6 @@
     </button>
   </main>
 
-  <!-- 履歴 -->
-  <section class="history">
-    <h2>★ さいきんの けっか ★</h2>
-    <ul class="history-list" id="historyList">
-      <li class="history-empty">まだ ふっていないよ。JUMP！を おしてね</li>
-    </ul>
-  </section>
-
 </div>
 
 <!-- 結果ポップアップ -->
@@ -461,7 +630,49 @@
     <div class="result-head" id="resultHead">けっか はっぴょう！</div>
     <div class="result-faces" id="resultFaces"></div>
     <div class="result-total" id="resultTotal"></div>
+    <div class="result-earn" id="resultEarn"></div>
     <div class="result-hint">タップで とじる</div>
+  </div>
+</div>
+
+<!-- ガチャ ポップアップ -->
+<div class="gacha-overlay" id="gachaOverlay">
+  <div class="gacha-stage" id="gachaStage">
+    <div class="gacha-rays" id="gachaRays"></div>
+    <div class="machine" id="machine">
+      <div class="m-dome"></div>
+      <div class="m-body">
+        <div class="m-knob"></div>
+        <div class="m-slot"></div>
+      </div>
+    </div>
+    <div class="gacha-item" id="gachaItem">
+      <div class="gi-rarity" id="giRarity"></div>
+      <div class="gi-stars" id="giStars"></div>
+      <div class="gi-emoji" id="giEmoji">⭐</div>
+      <div class="gi-name" id="giName">ほし</div>
+      <div class="gi-dup" id="giDup"></div>
+      <div class="gacha-actions">
+        <button class="gbtn again" id="gachaAgain" type="button">もう1かい（10まい）</button>
+        <button class="gbtn done" id="gachaDone" type="button">とじる</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- コレクション（ごほうび ずかん） -->
+<div class="coll-overlay" id="collOverlay">
+  <div class="coll-card">
+    <div class="coll-head">
+      <span>🌟 なかま ずかん</span>
+      <button class="coll-close" id="collClose" type="button">とじる</button>
+    </div>
+    <div class="coll-progress">
+      <div class="coll-sub" id="collSub">あつめた しゅるい 0／18</div>
+      <div class="coll-bar"><div class="coll-bar-fill" id="collBarFill"></div></div>
+    </div>
+    <div class="coll-complete" id="collComplete">🎉 ぜんぶ あつめたよ！コンプリート！ 🎉</div>
+    <div id="collSections"></div>
   </div>
 </div>
 
@@ -548,15 +759,29 @@ const DICE = {
   normal: {
     faces(){ return [1,2,3,4,5,6,7,8,9,10].map(n => ({label:String(n), value:n, coin:0, bad:false})); }
   },
-  risk: {
+  coin: {
     faces(){
+      // コインダイス：出た目ぶん コインがもらえる
       return [
-        {label:'-3枚', value:0, coin:-3, bad:true},
-        {label:'-3枚', value:0, coin:-3, bad:true},
-        {label:'1',  value:1,  coin:0, bad:false},
-        {label:'8',  value:8,  coin:0, bad:false},
-        {label:'9',  value:9,  coin:0, bad:false},
-        {label:'10', value:10, coin:0, bad:false},
+        {label:'1まい',  value:null, coin:1,  bad:false},
+        {label:'2まい',  value:null, coin:2,  bad:false},
+        {label:'3まい',  value:null, coin:3,  bad:false},
+        {label:'5まい',  value:null, coin:5,  bad:false},
+        {label:'8まい',  value:null, coin:8,  bad:false},
+        {label:'10まい', value:null, coin:10, bad:false},
+      ];
+    }
+  },
+  minus: {
+    faces(){
+      // −コインダイス：コインが へる（「セーフ！」は へらない）
+      return [
+        {label:'セーフ！', value:null, coin:0,  bad:false},
+        {label:'-1まい',  value:null, coin:-1, bad:true},
+        {label:'-1まい',  value:null, coin:-1, bad:true},
+        {label:'-2まい',  value:null, coin:-2, bad:true},
+        {label:'-3まい',  value:null, coin:-3, bad:true},
+        {label:'-5まい',  value:null, coin:-5, bad:true},
       ];
     }
   },
@@ -573,6 +798,8 @@ const DICE = {
     }
   }
 };
+// コインがうごくサイコロかどうか（ノーマル・お題は うごかない）
+const GIVES_COINS = { normal:false, coin:true, minus:true, custom:false };
 
 /* =========================================================
    状態
@@ -581,7 +808,6 @@ let diceCount = 1;
 let diceType = 'normal';
 let coins = 10;
 let rolling = false;
-const history = [];
 
 const diceArea   = document.getElementById('diceArea');
 const jumpBtn    = document.getElementById('jumpBtn');
@@ -660,6 +886,7 @@ function rollAll(){
   if(rolling) return;
   rolling = true;
   jumpBtn.disabled = true;
+  refreshGachaBtn();
 
   const faceSet = DICE[diceType].faces();
   const dice = diceArea._dice;
@@ -726,27 +953,32 @@ function finishRoll(results){
   const labels = results.map(r => r.label);
   const isZoro = results.length >= 2 && labels.every(l => l === labels[0]);
 
-  // コイン処理
-  const coinDelta = results.reduce((s,r) => s + (r.coin || 0), 0);
+  const isBig = (hasTotal && total >= 10) || isZoro;
+
+  // ===== コインの計算（コインがうごくサイコロのときだけ）=====
   const anyBad = results.some(r => r.bad);
-  if(coinDelta !== 0){
-    coins = Math.max(0, coins + coinDelta);
-    updateCoins(coinDelta < 0);
+  let net = 0;
+  if(GIVES_COINS[diceType]){
+    net = results.reduce((s,r) => s + (r.coin || 0), 0); // コインダイス＝もらえる分、リスク＝へる分
+    if(diceType === 'coin' && isZoro) net += 5;          // コインダイスで ゾロ目なら ボーナス
+    coins = Math.max(0, coins + net);
+    updateCoins(net < 0);
   }
 
-  const isBig = (hasTotal && total >= 10) || isZoro;
+  // お祝いは「コインが へっていない」ときだけ
+  const good = isBig && net >= 0;
 
   // 音
   if(anyBad){ sndSad(); }
-  if(isBig){ setTimeout(sndFanfare, anyBad ? 450 : 60); }
+  if(good){ setTimeout(sndFanfare, anyBad ? 450 : 60); }
 
-  showResult(results, hasTotal, total, isZoro, isBig);
-  addHistory(results, hasTotal, total, isZoro);
+  showResult(results, hasTotal, total, isZoro, good, net);
 
-  if(isBig){ celebrate(isZoro); }
+  if(good){ celebrate(isZoro); }
 
   rolling = false;
   jumpBtn.disabled = false;
+  refreshGachaBtn();
 }
 
 function updateCoins(isLose){
@@ -755,6 +987,7 @@ function updateCoins(isLose){
   if(isLose){
     coinBox.classList.remove('lose'); void coinBox.offsetWidth; coinBox.classList.add('lose');
   }
+  if(typeof refreshGachaBtn === 'function') refreshGachaBtn();
 }
 
 /* =========================================================
@@ -767,7 +1000,7 @@ const facesEl   = document.getElementById('resultFaces');
 const totalEl   = document.getElementById('resultTotal');
 let hideTimer = null;
 
-function showResult(results, hasTotal, total, isZoro, isBig){
+function showResult(results, hasTotal, total, isZoro, isBig, net){
   facesEl.innerHTML = '';
   results.forEach((r, i) => {
     const chip = document.createElement('span');
@@ -777,7 +1010,8 @@ function showResult(results, hasTotal, total, isZoro, isBig){
     facesEl.appendChild(chip);
   });
 
-  if(isZoro){ headEl.textContent = 'ゾロ目だ！すごい！'; }
+  if(net < 0){ headEl.textContent = 'コインが へっちゃった…'; }
+  else if(isZoro && isBig){ headEl.textContent = 'ゾロ目だ！すごい！'; }
   else if(isBig){ headEl.textContent = '大当たり！やったね！'; }
   else { headEl.textContent = 'けっか はっぴょう！'; }
 
@@ -787,6 +1021,17 @@ function showResult(results, hasTotal, total, isZoro, isBig){
     totalEl.style.display = 'block';
   }else{
     totalEl.style.display = 'none';
+  }
+
+  const earnEl = document.getElementById('resultEarn');
+  if(net > 0){
+    earnEl.textContent = '🪙 コイン ＋' + net + 'まい！';
+    earnEl.classList.remove('minus'); earnEl.style.display = 'block';
+  }else if(net < 0){
+    earnEl.textContent = '🪙 コイン ' + net + 'まい…';
+    earnEl.classList.add('minus'); earnEl.style.display = 'block';
+  }else{
+    earnEl.style.display = 'none';
   }
 
   card.classList.toggle('celebrate', isBig);
@@ -820,37 +1065,6 @@ function celebrate(isZoro){
 }
 
 /* =========================================================
-   履歴
-   ========================================================= */
-const historyList = document.getElementById('historyList');
-function addHistory(results, hasTotal, total, isZoro){
-  history.unshift({ labels: results.map(r=>r.label), hasTotal, total, isZoro });
-  if(history.length > 12) history.pop();
-  renderHistory();
-}
-function renderHistory(){
-  if(history.length === 0){
-    historyList.innerHTML = '<li class="history-empty">まだ ふっていないよ。JUMP！を おしてね</li>';
-    return;
-  }
-  historyList.innerHTML = '';
-  history.forEach((h, i) => {
-    const li = document.createElement('li');
-    li.style.animationDelay = (i*0.03) + 's';
-    const facesTxt = h.labels.join('  /  ') + (h.isZoro ? '  ✨ゾロ目' : '');
-    const totalTxt = h.hasTotal ? ('ごうけい ' + h.total) : '';
-    li.innerHTML =
-      '<span class="h-num">' + (i+1) + '</span>' +
-      '<span class="h-faces">' + escapeHtml(facesTxt) + '</span>' +
-      (totalTxt ? '<span class="h-total">' + totalTxt + '</span>' : '');
-    historyList.appendChild(li);
-  });
-}
-function escapeHtml(s){
-  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-
-/* =========================================================
    コントロールの操作
    ========================================================= */
 document.querySelectorAll('.count-btn').forEach(btn => {
@@ -862,6 +1076,32 @@ document.querySelectorAll('.count-btn').forEach(btn => {
     diceCount = Number(btn.dataset.count);
     buildDice();
     tone(880, 0.07, 'square', 0.1);
+  });
+});
+
+/* サイコロの いろ えらび（赤・青・黄・緑） */
+const DICE_COLORS = {
+  red:    { light:'#ff9a9d', main:'#ff6b6f', deep:'#e8403a', edge:'#b8261f', pip:'#d12b25' },
+  blue:   { light:'#7fc0ff', main:'#3aa0ff', deep:'#1f74e0', edge:'#1357b0', pip:'#1f74e0' },
+  yellow: { light:'#ffe27a', main:'#ffce2e', deep:'#f0a800', edge:'#9a6b00', pip:'#9a6b00' },
+  green:  { light:'#9be86b', main:'#5ccb63', deep:'#36a93f', edge:'#247a2b', pip:'#2c8a34' },
+};
+function setDiceColor(name){
+  const c = DICE_COLORS[name]; if(!c) return;
+  const root = document.documentElement.style;
+  root.setProperty('--die-light', c.light);
+  root.setProperty('--die-main',  c.main);
+  root.setProperty('--die-deep',  c.deep);
+  root.setProperty('--die-edge',  c.edge);
+  root.setProperty('--die-pip',   c.pip);
+}
+document.querySelectorAll('.color-swatch').forEach(sw => {
+  sw.addEventListener('click', () => {
+    getCtx();
+    document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+    sw.classList.add('active');
+    setDiceColor(sw.dataset.color);
+    tone(760, 0.08, 'triangle', 0.1);
   });
 });
 
@@ -894,6 +1134,221 @@ jumpBtn.addEventListener('click', () => {
 });
 
 /* =========================================================
+   ガチャ ＆ コレクション
+   ========================================================= */
+const GACHA_COST = 10;
+// ※パーティゲーム風の「オリジナルなかまキャラクター」図鑑（実在キャラクターは使っていません）
+const ITEMS = [
+  // ノーマル（よく出る なかま）— 14体
+  {id:'piyo',  emoji:'🐤', name:'ぴよすけ',     rarity:'n'},
+  {id:'pyon',  emoji:'🐸', name:'ぴょん太',     rarity:'n'},
+  {id:'nyan',  emoji:'🐱', name:'ニャン吉',     rarity:'n'},
+  {id:'mimi',  emoji:'🐰', name:'ミミちゃん',   rarity:'n'},
+  {id:'moko',  emoji:'🐻', name:'くまのモコ',   rarity:'n'},
+  {id:'pen',   emoji:'🐧', name:'ペンちゃん',   rarity:'n'},
+  {id:'kame',  emoji:'🐢', name:'のんびりガメ', rarity:'n'},
+  {id:'wan',   emoji:'🐶', name:'わんすけ',     rarity:'n'},
+  {id:'chu',   emoji:'🐭', name:'ちゅう太',     rarity:'n'},
+  {id:'hamu',  emoji:'🐹', name:'ハムりん',     rarity:'n'},
+  {id:'buu',   emoji:'🐷', name:'ぶうこ',       rarity:'n'},
+  {id:'moo',   emoji:'🐮', name:'もーちゃん',   rarity:'n'},
+  {id:'kokko', emoji:'🐔', name:'こっこ',       rarity:'n'},
+  {id:'mee',   emoji:'🐑', name:'メエこ',       rarity:'n'},
+  // レア（ちょっと めずらしい なかま）— 10体
+  {id:'kon',   emoji:'🦊', name:'きつねのコンちゃん', rarity:'r'},
+  {id:'tora',  emoji:'🐯', name:'トラきち',     rarity:'r'},
+  {id:'hoo',   emoji:'🦉', name:'ホー博士',     rarity:'r'},
+  {id:'panda', emoji:'🐼', name:'パンだ太郎',   rarity:'r'},
+  {id:'leo',   emoji:'🦁', name:'レオキング',   rarity:'r'},
+  {id:'tako',  emoji:'🐙', name:'タコすけ',     rarity:'r'},
+  {id:'rasu',  emoji:'🦝', name:'あらいぐまラスくん', rarity:'r'},
+  {id:'sui',   emoji:'🦦', name:'かわうそスイ', rarity:'r'},
+  {id:'hari',  emoji:'🦔', name:'ハリーくん',   rarity:'r'},
+  {id:'kero',  emoji:'🐲', name:'みずうみのケロロン', rarity:'r'},
+  // スーパーレア（めったに 会えない スターなかま）— 6体
+  {id:'gao',   emoji:'🐉', name:'ドラゴンのガオくん',   rarity:'s'},
+  {id:'kirari',emoji:'🦄', name:'ユニコーンのキラリ',   rarity:'s'},
+  {id:'zaurus',emoji:'🦖', name:'きょうりゅうザウルス', rarity:'s'},
+  {id:'puu',   emoji:'👻', name:'おばけのプー',         rarity:'s'},
+  {id:'robo',  emoji:'🤖', name:'ロボのピカル',         rarity:'s'},
+  {id:'phoenix',emoji:'🦅', name:'ほのおのフェニー',    rarity:'s'},
+];
+const RARITY_LABEL = { n:'ノーマル', r:'レア！', s:'★キラ☆スーパーレア★' };
+const RARITY_STARS = { n:'★', r:'★★', s:'★★★' };
+const RARITY_ORDER = [
+  {key:'s', title:'スーパーレア', cls:'st-s', star:'★★★'},
+  {key:'r', title:'レア',         cls:'st-r', star:'★★'},
+  {key:'n', title:'ノーマル',     cls:'st-n', star:'★'},
+];
+const collection = {};       // id -> もっている かず
+const newItems = new Set();  // ずかんで NEW! を出す用
+let gachaBusy = false;
+
+const gachaBtn  = document.getElementById('gachaBtn');
+const collCount = document.getElementById('collCount');
+
+function refreshGachaBtn(){
+  if(!gachaBtn) return;
+  gachaBtn.disabled = rolling || gachaBusy || coins < GACHA_COST;
+  const again = document.getElementById('gachaAgain');
+  if(again) again.disabled = coins < GACHA_COST;
+}
+function sndSparkle(){ [1318.5,1568,1976,2349].forEach((f,i)=>tone(f,0.2,'triangle',0.12,i*0.07)); }
+function sndCoinSpend(){ tone(1046,0.06,'square',0.12); tone(784,0.08,'square',0.1,0.05); }
+
+function drawGacha(){
+  if(rolling || gachaBusy) return;
+  if(coins < GACHA_COST){
+    sndSad();
+    coinBox.classList.remove('lose'); void coinBox.offsetWidth; coinBox.classList.add('lose');
+    return;
+  }
+  gachaBusy = true;
+  coins -= GACHA_COST;
+  sndCoinSpend();
+  updateCoins(false);   // ガチャ代は赤フラッシュなし
+
+  // レアリティ抽選（ノーマル70％・レア25％・スーパーレア5％）
+  const r = Math.random();
+  const rar = r < 0.70 ? 'n' : (r < 0.95 ? 'r' : 's');
+  const pool = ITEMS.filter(it => it.rarity === rar);
+  const item = pool[Math.floor(Math.random()*pool.length)];
+
+  const before = collection[item.id] || 0;
+  collection[item.id] = before + 1;
+  const isNew = before === 0;
+  if(isNew) newItems.add(item.id);
+  renderCollection();
+
+  openGachaAnim(item, isNew);
+}
+
+const gachaOverlay = document.getElementById('gachaOverlay');
+const machine      = document.getElementById('machine');
+const gachaItem    = document.getElementById('gachaItem');
+const gachaRays    = document.getElementById('gachaRays');
+let gachaHideTimer = null;
+
+function openGachaAnim(item, isNew){
+  clearTimeout(gachaHideTimer);
+  gachaItem.classList.remove('show');
+  gachaRays.classList.remove('go','gold');
+  machine.classList.remove('hide','charging');
+  machine.classList.add('shaking');
+  gachaOverlay.classList.add('show');
+
+  // ガチャを回す音（カチカチ）
+  let n = 0;
+  const tk = setInterval(() => { sndTick(); if(++n >= 7) clearInterval(tk); }, 120);
+
+  // スーパーレアは開く前に「ためる」演出
+  if(item.rarity === 's'){
+    setTimeout(() => {
+      machine.classList.remove('shaking');
+      machine.classList.add('charging');
+      tone(220,0.5,'sawtooth',0.12);
+      tone(330,0.5,'sawtooth',0.1,0.1);
+    }, 850);
+  }
+
+  const openDelay = item.rarity === 's' ? 1500 : 1050;
+
+  setTimeout(() => {
+    machine.classList.remove('shaking','charging');
+    machine.classList.add('hide');
+
+    document.getElementById('giEmoji').textContent = item.emoji;
+    document.getElementById('giName').textContent  = item.name;
+    const rEl = document.getElementById('giRarity');
+    rEl.textContent = RARITY_LABEL[item.rarity];
+    rEl.className = 'gi-rarity ' + item.rarity;
+    const sEl = document.getElementById('giStars');
+    sEl.textContent = RARITY_STARS[item.rarity];
+    sEl.className = 'gi-stars ' + item.rarity;
+    document.getElementById('giDup').innerHTML =
+      isNew ? '<span class="gi-new">✨ NEW！はじめて あえたね！</span>'
+            : ('あえた かず：' + collection[item.id]);
+
+    gachaItem.classList.add('show');
+    sndPoyon();
+
+    if(item.rarity === 'r'){
+      gachaRays.classList.add('go');
+      sndFanfare(); celebrate(false);
+    } else if(item.rarity === 's'){
+      gachaRays.classList.add('go','gold');
+      sndFanfare(); setTimeout(sndSparkle, 220);
+      celebrate(true);
+      setTimeout(() => celebrate(true), 450);
+    } else {
+      tone(660,0.12,'triangle',0.16); tone(880,0.16,'triangle',0.16,0.1);
+    }
+
+    refreshGachaBtn();
+    gachaBusy = false;
+    refreshGachaBtn();
+  }, openDelay);
+}
+function closeGacha(){
+  gachaOverlay.classList.remove('show');
+  gachaRays.classList.remove('go','gold');
+}
+
+/* ===== コレクション（ずかん） ===== */
+const collOverlay  = document.getElementById('collOverlay');
+const collSections = document.getElementById('collSections');
+const collSub      = document.getElementById('collSub');
+const collBarFill  = document.getElementById('collBarFill');
+const collComplete = document.getElementById('collComplete');
+
+function renderCollection(){
+  const gotKinds = Object.keys(collection).length;
+  const totalKinds = ITEMS.length;
+  if(collCount) collCount.textContent = gotKinds + '／' + totalKinds;
+  collSub.textContent = 'あつめた しゅるい ' + gotKinds + '／' + totalKinds;
+  collBarFill.style.width = Math.round(gotKinds / totalKinds * 100) + '%';
+  collComplete.classList.toggle('show', gotKinds === totalKinds);
+
+  collSections.innerHTML = '';
+  RARITY_ORDER.forEach(group => {
+    const list = ITEMS.filter(it => it.rarity === group.key);
+    const sec = document.createElement('div');
+    sec.className = 'coll-section';
+    const title = document.createElement('div');
+    title.className = 'coll-section-title';
+    title.innerHTML = '<span class="' + group.cls + '">' + group.star + '</span> ' + group.title;
+    sec.appendChild(title);
+
+    const grid = document.createElement('div');
+    grid.className = 'coll-grid';
+    list.forEach(it => {
+      const cnt = collection[it.id] || 0;
+      const got = cnt > 0;
+      const cell = document.createElement('div');
+      cell.className = 'coll-cell ' + (got ? ('got ' + it.rarity) : 'locked');
+      cell.innerHTML =
+        (got && newItems.has(it.id) ? '<span class="coll-newbadge">NEW</span>' : '') +
+        (cnt > 1 ? '<span class="coll-count">×' + cnt + '</span>' : '') +
+        '<span class="coll-emoji">' + (got ? it.emoji : '❓') + '</span>' +
+        '<span class="coll-name">' + (got ? it.name : '？？？') + '</span>';
+      grid.appendChild(cell);
+    });
+    sec.appendChild(grid);
+    collSections.appendChild(sec);
+  });
+}
+function openCollection(){ newItems.clear(); renderCollection(); collOverlay.classList.add('show'); tone(700,0.08,'triangle',0.1); }
+function closeCollection(){ collOverlay.classList.remove('show'); }
+
+gachaBtn.addEventListener('click', () => { getCtx(); drawGacha(); });
+document.getElementById('gachaAgain').addEventListener('click', () => { getCtx(); drawGacha(); });
+document.getElementById('gachaDone').addEventListener('click', closeGacha);
+gachaOverlay.addEventListener('click', (e) => { if(e.target === gachaOverlay && !gachaBusy) closeGacha(); });
+document.getElementById('collectionBtn').addEventListener('click', () => { getCtx(); openCollection(); });
+document.getElementById('collClose').addEventListener('click', closeCollection);
+collOverlay.addEventListener('click', (e) => { if(e.target === collOverlay) closeCollection(); });
+
+/* =========================================================
    背景の星
    ========================================================= */
 (function initStars(){
@@ -913,6 +1368,8 @@ jumpBtn.addEventListener('click', () => {
 
 /* 初期化 */
 buildDice();
+renderCollection();
+refreshGachaBtn();
 </script>
 </body>
 </html>
