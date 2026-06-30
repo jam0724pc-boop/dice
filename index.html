@@ -115,6 +115,26 @@
   }
   .coin-num.bump{ animation:bump .35s ease; }
   @keyframes bump{ 0%,100%{transform:scale(1);} 40%{transform:scale(1.4); color:var(--red-deep);} }
+  .coin-num.gainbump{ animation:gainBump .55s cubic-bezier(.2,1.7,.4,1); }
+  @keyframes gainBump{ 0%{transform:scale(1);} 45%{transform:scale(1.7); color:var(--yellow-deep);} 100%{transform:scale(1);} }
+  .coin-box.gain{ animation:coinGainGlow .8s ease; }
+  @keyframes coinGainGlow{
+    0%,100%{ box-shadow:0 6px 0 var(--shadow); }
+    35%{ box-shadow:0 6px 0 var(--shadow), 0 0 26px 8px rgba(255,205,40,.95); background:#fffbe6; transform:scale(1.06); }
+    70%{ box-shadow:0 6px 0 var(--shadow), 0 0 14px 3px rgba(255,205,40,.5); }
+  }
+
+  /* とんでいく コイン */
+  .fly-coin{
+    position:fixed; z-index:66; font-size:34px; pointer-events:none; will-change:transform,opacity;
+    animation:flyCoin .9s cubic-bezier(.45,0,.55,1) forwards;
+    filter:drop-shadow(0 3px 4px rgba(0,0,0,.3));
+  }
+  @keyframes flyCoin{
+    0%{ transform:translate(0,0) scale(.3) rotate(0deg); opacity:0; }
+    18%{ transform:translate(calc(var(--dx)*.08), -70px) scale(1.3) rotate(120deg); opacity:1; }
+    100%{ transform:translate(var(--dx), var(--dy)) scale(.45) rotate(540deg); opacity:.2; }
+  }
 
   .coin-reset{
     border:none; background:var(--blue); color:#fff;
@@ -393,6 +413,15 @@
     color:var(--yellow-deep);
   }
   .result-earn.minus{ color:var(--red-deep); }
+  .result-earn.gain{
+    font-size:clamp(24px,7vw,38px);
+    background:linear-gradient(180deg,#ffe066,#f5b400);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    text-shadow:0 2px 0 rgba(154,107,0,.25);
+    animation:earnPop .55s cubic-bezier(.2,1.8,.4,1), earnShine 1.4s linear .3s infinite;
+  }
+  @keyframes earnPop{ 0%{ transform:scale(0) rotate(-12deg);} 65%{ transform:scale(1.3);} 100%{ transform:scale(1);} }
+  @keyframes earnShine{ 0%,100%{ filter:brightness(1);} 50%{ filter:brightness(1.35);} }
 
   /* ===== ごほうび（ガチャ・コレクション）ボタン ===== */
   .reward-row{ display:flex; gap:10px; width:100%; max-width:640px; flex-wrap:wrap; }
@@ -1077,31 +1106,53 @@ function finishRoll(results){
   const anyBad = results.some(r => r.bad);
   let net = 0;
   if(GIVES_COINS[diceType]){
-    net = results.reduce((s,r) => s + (r.coin || 0), 0); // コインダイス＝もらえる分、リスク＝へる分
+    net = results.reduce((s,r) => s + (r.coin || 0), 0); // コインダイス＝もらえる分、−コイン＝へる分
     if(diceType === 'coin' && isZoro) net += 5;          // コインダイスで ゾロ目なら ボーナス
     coins = Math.max(0, coins + net);
-    updateCoins(net < 0);
+    updateCoins(net < 0, net > 0);
   }
 
-  // お祝いは「コインが へっていない」ときだけ
-  const good = isBig && net >= 0;
+  const coinGain = net > 0;                 // コインが ふえた
+  const good = isBig && net >= 0 && !coinGain; // ノーマルのゾロ目・合計10など
 
   // 音
   if(anyBad){ sndSad(); }
-  if(good){ setTimeout(sndFanfare, anyBad ? 450 : 60); }
 
-  showResult(results, hasTotal, total, isZoro, good, net);
+  showResult(results, hasTotal, total, isZoro, (good || coinGain), net);
 
-  if(good){ celebrate(isZoro); }
+  if(coinGain){
+    coinCelebrate(net);                     // ど派手な コインゲット演出
+  }else if(good){
+    setTimeout(sndFanfare, 60);
+    celebrate(isZoro);
+  }
 
   rolling = false;
   jumpBtn.disabled = false;
   refreshGachaBtn();
 }
 
-function updateCoins(isLose){
-  coinNum.textContent = coins;
-  coinNum.classList.remove('bump'); void coinNum.offsetWidth; coinNum.classList.add('bump');
+let coinAnim = null;
+function setCoinDisplay(target){
+  if(coinAnim) cancelAnimationFrame(coinAnim);
+  const start = parseInt(coinNum.textContent, 10) || 0;
+  if(start === target){ coinNum.textContent = target; return; }
+  const dur = Math.min(700, 220 + Math.abs(target - start) * 45);
+  const t0 = performance.now();
+  function step(now){
+    const k = Math.min(1, (now - t0) / dur);
+    const ease = 1 - Math.pow(1 - k, 2);
+    coinNum.textContent = Math.round(start + (target - start) * ease);
+    if(k < 1){ coinAnim = requestAnimationFrame(step); }
+    else { coinNum.textContent = target; coinAnim = null; }
+  }
+  coinAnim = requestAnimationFrame(step);
+}
+
+function updateCoins(isLose, isGain){
+  setCoinDisplay(coins);
+  const cls = isGain ? 'gainbump' : 'bump';
+  coinNum.classList.remove('bump','gainbump'); void coinNum.offsetWidth; coinNum.classList.add(cls);
   if(isLose){
     coinBox.classList.remove('lose'); void coinBox.offsetWidth; coinBox.classList.add('lose');
   }
@@ -1174,7 +1225,8 @@ function showResult(results, hasTotal, total, isZoro, isBig, net){
     facesEl.appendChild(chip);
   });
 
-  if(net < 0){ headEl.textContent = 'コインが へっちゃった…'; }
+  if(net > 0){ headEl.textContent = 'コイン ゲット！🪙✨'; }
+  else if(net < 0){ headEl.textContent = 'コインが へっちゃった…'; }
   else if(isZoro && isBig){ headEl.textContent = 'ゾロ目だ！すごい！'; }
   else if(isBig){ headEl.textContent = '大当たり！やったね！'; }
   else { headEl.textContent = 'けっか はっぴょう！'; }
@@ -1189,13 +1241,13 @@ function showResult(results, hasTotal, total, isZoro, isBig, net){
 
   const earnEl = document.getElementById('resultEarn');
   if(net > 0){
-    earnEl.textContent = '🪙 コイン ＋' + net + 'まい！';
-    earnEl.classList.remove('minus'); earnEl.style.display = 'block';
+    earnEl.textContent = '🪙＋' + net + 'まい ゲット！';
+    earnEl.className = 'result-earn gain'; earnEl.style.display = 'block';
   }else if(net < 0){
     earnEl.textContent = '🪙 コイン ' + net + 'まい…';
-    earnEl.classList.add('minus'); earnEl.style.display = 'block';
+    earnEl.className = 'result-earn minus'; earnEl.style.display = 'block';
   }else{
-    earnEl.style.display = 'none';
+    earnEl.className = 'result-earn'; earnEl.style.display = 'none';
   }
 
   card.classList.toggle('celebrate', isBig);
@@ -1226,6 +1278,52 @@ function celebrate(isZoro){
   if(isZoro){
     setTimeout(() => burst({ origin:{ x:0.5, y:0.5 }, particleCount:160, spread:160, startVelocity:55 }), 400);
   }
+}
+
+/* ===== コインが ふえる ど派手演出 ===== */
+function sndCoinGain(amount){
+  const n = Math.min(Math.max(amount, 1), 7);
+  for(let i = 0; i < n; i++){
+    const d = i * 0.085;
+    tone(988,  0.07, 'square', 0.12, d);        // チャ
+    tone(1319, 0.15, 'square', 0.12, d + 0.05); // リン♪
+  }
+  tone(1760, 0.45, 'triangle', 0.10, n * 0.085); // きらめき
+}
+
+function flyCoins(amount){
+  const rect = coinBox.getBoundingClientRect();
+  const tx = rect.left + rect.width / 2;
+  const ty = rect.top + rect.height / 2;
+  const n = Math.min(Math.max(amount, 3), 14);
+  for(let i = 0; i < n; i++){
+    const c = document.createElement('div');
+    c.className = 'fly-coin';
+    c.textContent = '🪙';
+    const sx = window.innerWidth / 2 + (Math.random() * 160 - 80);
+    const sy = window.innerHeight / 2 + (Math.random() * 100 - 30);
+    c.style.left = sx + 'px';
+    c.style.top  = sy + 'px';
+    c.style.setProperty('--dx', (tx - sx) + 'px');
+    c.style.setProperty('--dy', (ty - sy) + 'px');
+    c.style.animationDelay = (i * 45) + 'ms';
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 1100 + i * 45);
+  }
+}
+
+function coinCelebrate(amount){
+  sndCoinGain(amount);
+  coinBox.classList.remove('gain'); void coinBox.offsetWidth; coinBox.classList.add('gain');
+  if(typeof confetti === 'function'){
+    const gold = ['#ffd234','#fff3a8','#f5b400','#ffcf2e','#ffffff'];
+    const pc = Math.min(50 + amount * 9, 150);
+    confetti({ particleCount:pc, spread:85, startVelocity:45, ticks:200, scalar:1.15, colors:gold, origin:{ x:0.5, y:0.62 }, zIndex:60 });
+    confetti({ particleCount:Math.round(pc*0.5), angle:60,  spread:60, startVelocity:55, scalar:1.1, colors:gold, origin:{ x:0.1, y:0.8 }, zIndex:60 });
+    confetti({ particleCount:Math.round(pc*0.5), angle:120, spread:60, startVelocity:55, scalar:1.1, colors:gold, origin:{ x:0.9, y:0.8 }, zIndex:60 });
+    setTimeout(() => confetti({ particleCount:Math.round(pc*0.7), spread:130, startVelocity:40, scalar:1.25, colors:gold, origin:{ x:0.5, y:0.45 }, zIndex:60 }), 180);
+  }
+  setTimeout(() => flyCoins(amount), 130);
 }
 
 /* =========================================================
