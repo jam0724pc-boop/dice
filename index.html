@@ -675,7 +675,7 @@
   .tc-co.osaka{ background:#e5171f; }
   .tc-old{ font-weight:800; font-size:12px; color:#8a5a00; background:#fff1c2; border:2px solid #e0b03a; padding:1px 10px; border-radius:999px; }
   .tc-now{ font-weight:800; font-size:12px; color:var(--green-deep); background:#eafff0; border:2px solid #9be0a5; padding:1px 10px; border-radius:999px; }
-  .tc-art{ width:min(190px,46vw); margin:2px auto 0; animation:itemFloat 2.4s ease-in-out infinite; }
+  .tc-art{ width:min(230px,56vw); margin:2px auto 0; animation:itemFloat 2.4s ease-in-out infinite; }
   .tc-art .train-svg{ width:100%; height:auto; display:block; filter:drop-shadow(0 8px 10px rgba(0,0,0,.18)); }
   .tc-line{ display:flex; align-items:center; justify-content:center; gap:6px; font-weight:800; font-size:16px; color:var(--ink); margin-top:4px; }
   .lbadge{ display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%;
@@ -693,9 +693,10 @@
     box-shadow:0 14px 0 var(--shadow), 0 22px 44px rgba(0,0,0,.34); animation:itemPop .4s cubic-bezier(.2,1.6,.45,1); }
 
   /* ずかんの セル */
-  .coll-art{ width:72%; display:block; z-index:1; }
+  .coll-art{ width:82%; display:block; z-index:1; }
   .coll-art .train-svg{ width:100%; height:auto; display:block; }
-  .coll-cell.locked .coll-art{ opacity:.45; }
+  .coll-cell.locked .coll-art .train-svg{ filter:brightness(0); opacity:.16; }
+  .coll-cell.locked .coll-art{ opacity:1; }
   .coll-line{ display:flex; gap:2px; z-index:1; }
   .coll-line .lbadge{ width:18px; height:18px; border-width:3px; font-size:9px; }
   .coll-cell{ aspect-ratio:auto; min-height:118px; padding:6px 2px; }
@@ -1603,7 +1604,7 @@ const ITEMS = [
     mania:'2012年に とうじょう。むかしの [旧|きゅう]1000形を イメージした 黄色。カーブの 多い [銀座|ぎんざ]線でも 走りやすい「そうだ台車」を つかっているよ。' },
   { id:'g1000sp', rarity:'n', line:'G', series:'1000[系|けい] とくべつ しよう車', body:'#F3B700', stripe:'#7a4a12', style:'retro',
     desc:'むかしの 電車に そっくりな、レトロな 1000[系|けい]。',
-    mania:'2017年に 2へんせい だけ 作られたよ。車内の あかりや 手すりも むかし風。見つけたら ラッキー！' },
+    mania:'2017年に 2へんせい だけ 作られたよ。ライトは むかしと 同じ 1つだけ。ポイントを 通る とき、車内の あかりが 一しゅん きえた むかしの ようすも さいげん できるんだ。' },
   { id:'kyu1000', rarity:'n', line:'G', series:'[旧|きゅう]1000形', body:'#F3B700', stripe:'#B3261E', style:'retro', old:true,
     desc:'1927年、日本で はじめての 地下てつを 走った 電車。',
     mania:'[上野|うえの]〜[浅草|あさくさ]を 走ったよ。いまは 国の「じゅうよう ぶんかざい」に なって、地下てつ はくぶつかんに いるんだ。' },
@@ -1624,16 +1625,16 @@ const ITEMS = [
     mania:'引たいした あと、海を こえて アルゼンチンの ブエノスアイレスへ 行って 走ったよ！' },
   { id:'h13000', rarity:'n', line:'H', series:'13000[系|けい]', body:'#E3E8EE', stripe:'#9CAEB7', style:'std',
     desc:'日[比|び]谷線の 新しい 電車。',
-    mania:'2017年 とうじょう。18メートル×8りょうから、20メートル×7りょうに かわったよ。[東武|とうぶ]の 70000[系|けい]と きょうだい みたいな 電車。' },
+    mania:'2017年3月25日に 本かく デビュー。18メートル×8りょうから、20メートル×7りょうに かわったよ。[東武|とうぶ]の 70000[系|けい]と 同じ しようの きょうだい 電車。' },
   { id:'h03', rarity:'n', line:'H', series:'03[系|けい]', body:'#E3E8EE', stripe:'#9CAEB7', style:'std', old:true,
     desc:'日[比|び]谷線を 30年 ちかく 走った 電車。',
-    mania:'1988年 とうじょう、2020年に 引たい。[長野|ながの]電[鉄|てつ]などに うつって、いまも 走っているよ。' },
+    mania:'1988年 とうじょう。ドアが 3つの 車りょうと 5つの 車りょうが まざった へんせいが あったよ。引たい後は [長野|ながの]電[鉄|てつ]や 北[陸|りく]てつ道など 4つの 会社へ うつったんだ。' },
   { id:'h3000', rarity:'n', line:'H', series:'3000[系|けい]', body:'#D5DBE2', stripe:'#9CAEB7', style:'retro', old:true,
     desc:'日[比|び]谷線が できた ときの ステンレスの 電車。',
     mania:'ずんぐりした 顔から、ニックネームは「マッコウクジラ」！ 1961年に とうじょうしたよ。' },
   { id:'t15000', rarity:'n', line:'T', series:'15000[系|けい]', body:'#E3E8EE', stripe:'#00A7DB', style:'wide',
     desc:'ドアが ふつうより 大きい「ワイドドア」の 電車。',
-    mania:'こみあう 東西線のために、ドアの はばを 1.8メートルに したよ。のりおりが スムーズ！ 2010年 とうじょう。' },
+    mania:'こみあう 東西線のために、ドアの はばを 1.8メートルに したよ。ふつうの 電車より 50センチも ひろい！ 2010年5月 とうじょう。' },
   { id:'t05', rarity:'n', line:'T', series:'05[系|けい]', body:'#E3E8EE', stripe:'#00A7DB', style:'std',
     desc:'東西線で 大かつやくの ぎん色の 電車。',
     mania:'1988年 とうじょう。作られた 年に よって、顔の 形が ちがう へんせいが あるよ。くらべて みよう！' },
@@ -1648,16 +1649,16 @@ const ITEMS = [
     mania:'2010年 とうじょう。電気を せつやく できる「PMSM」モーターを つかっているよ。小田[急|きゅう]線へも 直通 するんだ。' },
   { id:'c6000', rarity:'n', line:'C', series:'6000[系|けい]', body:'#D5DBE2', stripe:'#009944', style:'std', old:true,
     desc:'千[代|よ]田線を 50年 ちかく 走った 名車。',
-    mania:'1968年 とうじょう、2018年に 引たい。インドネシアへも たくさん わたって 走ったよ。' },
+    mania:'1971年に 走りはじめて、2018年11月に 引たい。前の 顔が 左右で ちがう「ひたいしょう」デザイン。インドネシアへも たくさん わたって 走ったよ。' },
   { id:'y10000', rarity:'n', line:'YF', series:'10000[系|けい]', body:'#E3E8EE', stripe:'#C1A470', style:'round',
     desc:'まんまるな 顔の [有|ゆう]楽町線・[副都|ふくと]心線の 電車。',
     mania:'2006年 とうじょう。[副都|ふくと]心線から [東急|とうきゅう][東横|とうよこ]線、みなとみらい線の [元町・中華街|もとまち・ちゅうかがい]まで 行けるよ。' },
   { id:'y17000', rarity:'n', line:'YF', series:'17000[系|けい]', body:'#E3E8EE', stripe:'#C1A470', style:'std',
     desc:'2021年に デビューした 新しい 電車。',
-    mania:'7000[系|けい]と 入れかわりで とうじょう。8りょうと 10りょうの へんせいが あるよ。' },
+    mania:'2021年2月に とうじょう。7000[系|けい]と 入れかわったよ。8りょう へんせいが 15、10りょう へんせいが 6 あるんだ。' },
   { id:'y7000', rarity:'n', line:'YF', series:'7000[系|けい]', body:'#D5DBE2', stripe:'#C1A470', style:'std', old:true,
     desc:'[有|ゆう]楽町線が できた ころから 走った 電車。',
-    mania:'1974年 とうじょう。[副都|ふくと]心線でも かつやくして、2022年ごろ 引たいしたよ。' },
+    mania:'1974年、[有|ゆう]楽町線が できた 日から 走りはじめた。[副都|ふくと]心線でも かつやくして、2022年4月に 引たい。48年 がんばったよ。' },
   { id:'z08', rarity:'n', line:'Z', series:'08[系|けい]', body:'#E3E8EE', stripe:'#8F76D6', style:'std',
     desc:'むらさきの 線の 半[蔵|ぞう]門線の 電車。',
     mania:'2003年、半[蔵|ぞう]門線が [押上|おしあげ]まで のびた ときに とうじょう。[東武|とうぶ]線や [東急|とうきゅう]線へも 直通するよ。' },
@@ -1669,7 +1670,7 @@ const ITEMS = [
     mania:'1981年に 走りはじめた。じつは 1年 くらい 東西線を 走った へんせいも あったんだ。18000[系|けい]と 入れかわって 引たい。' },
   { id:'n9000', rarity:'n', line:'N', series:'9000[系|けい]', body:'#E3E8EE', stripe:'#00ADA9', style:'std',
     desc:'エメラルド色の 線の、南北線の 電車。',
-    mania:'1991年 とうじょう。南北線は 日本の 地下てつで はじめて、ぜんぶの えきに ホームドアを つけたんだ。' },
+    mania:'1991年に 南北線が できた ときから 走っているよ。南北線は、日本の ふつうの 電車の 線で はじめて ホームドアを つけた 線なんだ。' },
 
   // ===================== ★★ レア：大阪メトロ（11しゅるい）=====================
   { id:'o30000m', rarity:'r', line:'oM', series:'30000[系|けい]', body:'#E3E8EE', stripe:'#E5171F', style:'round',
@@ -1703,8 +1704,8 @@ const ITEMS = [
     desc:'オレンジの 線の 今里[筋|すじ]線を 走る リニア電車。',
     mania:'2006年 とうじょう。70[系|けい]と 同じ リニアモーターの なかま。4りょう へんせいだよ。' },
   { id:'o200', rarity:'r', line:'oP', series:'200[系|けい]', body:'#F4F7FA', stripe:'#00A3D9', style:'tram',
-    desc:'うんてんしが のっていない！ じどうで 走るよ。',
-    mania:'2016年 とうじょう。ゴムの タイヤで 走る ニュートラム。へんせい ごとに 前の 色が ちがう、カラフルな 電車だよ。' },
+    desc:'コンピューターが うんてんする、じどううんてんの 電車！',
+    mania:'2016年 とうじょう。ゴムの タイヤで 走るよ。赤・黄・ピンク・みどり・むらさき・青・オレンジの 7色が あって、へんせいごとに 色が ちがうんだ。' },
 
   // ===================== ★★★ スーパーレア：谷町線（5しゅるい）=====================
   { id:'t22', rarity:'s', line:'oT', series:'22[系|けい]', body:'#E3E8EE', stripe:'#522886', style:'std',
@@ -1743,71 +1744,237 @@ function lineBadge(L){
 }
 
 /* 電車の 顔の イラスト（SVG） */
-const DOTS = [[16,24],[26,30],[74,22],[84,34],[20,46],[80,50],[14,62],[86,66],[30,84],[70,86],[50,30],[22,74],[78,78],[36,22],[64,26],[44,90],[58,72],[12,38]];
-function trainSVG(it, locked){
-  const L = LINES[it.line];
-  const body   = locked ? '#cfd6e2' : it.body;
-  const stripe = locked ? '#b7c0d1' : (it.stripe || L.color);
-  const edge   = locked ? '#a9b2c4' : '#4b5568';
-  const st = it.style || 'std';
-  const rx = { std:12, round:26, retro:20, space:34, wide:12, dots:24, pan:12, small:18, tram:24 }[st] || 12;
-  const top = st === 'pan' ? 16 : 8;
-  let s = '<svg class="train-svg" viewBox="0 0 100 112" aria-hidden="true">';
-  s += '<ellipse cx="50" cy="106" rx="38" ry="4" fill="rgba(0,0,0,.18)"/>';
-  if(st === 'pan'){
-    s += '<path d="M30 12 L50 3 L70 12" fill="none" stroke="' + edge + '" stroke-width="2.4"/>';
-    s += '<rect x="26" y="1" width="48" height="3" rx="1.5" fill="' + edge + '"/>';
+/* =========================================================
+   電車の 顔（SVG）— 1りょうずつ 形・まど・ライト・帯を 描き分け
+   ========================================================= */
+const SILVER = '#d8dee6';
+// 車りょうごとの デザイン
+//  shape : box(四角) soft(少し丸) dome(丸い) bulb(ずんぐり) slant(ななめ) retro(むかし) space(うちゅう船) small(小がた) tram(ニュートラム)
+//  win   : pano(大まど1まい) split(まど2まい+まん中とびら) asymL/asymR(とびらが左/右) three(3まい) glass(前ぜんぶガラス)
+//  mask  : full(黒い顔) frame(まどのまわりだけ黒) none
+//  light : lowRound lowRect topPair topSingle inMask vertical arc
+const DESIGN = {
+  // ---- 東京メトロ ----
+  g1000   : { shape:'dome',  body:'#FFD027', mask:'full',  win:'pano',  light:'lowRect',  stripes:[{y:92,h:4,c:'#F39700'}] },
+  g1000sp : { shape:'dome',  body:'#F6C431', roof:'#7B2E1E', mask:'full', win:'pano', light:'topSingle', stripes:[{y:70,h:3,c:'#B8862B'},{y:92,h:4,c:'#7B2E1E'}], extra:['rivets'] },
+  kyu1000 : { shape:'retro', body:'#F2B400', roof:'#6E2718', mask:'none',  win:'three', light:'topSingle', stripes:[{y:72,h:4,c:'#6E2718'}], extra:['rivets'] },
+  g01     : { shape:'soft',  body:SILVER, mask:'full',  win:'pano',  light:'inMask',   stripes:[{y:70,h:8,c:'#F39700'}] },
+  m2000   : { shape:'dome',  body:'#E60012', mask:'full',  win:'pano',  light:'lowRect',  stripes:[], extra:['sineWhite'] },
+  m02     : { shape:'soft',  body:SILVER, mask:'full',  win:'split', light:'inMask',   stripes:[{y:70,h:9,c:'#E60012'}], extra:['sineWhite'] },
+  m300    : { shape:'bulb',  body:'#D7261E', mask:'none',  win:'three', light:'topSingle', stripes:[{y:72,h:7,c:'#FFFFFF'}], extra:['sineRed'] },
+  m500    : { shape:'bulb',  body:'#C9221B', mask:'none',  win:'three', light:'topPair',   stripes:[{y:72,h:7,c:'#FFFFFF'}], extra:['sineRed'] },
+  h13000  : { shape:'soft',  body:SILVER, mask:'full',  win:'pano',  light:'lowRect',  stripes:[{y:70,h:6,c:'#9CAEB7'},{y:78,h:2,c:'#5d6b74'}], faceAccent:'#9CAEB7' },
+  h03     : { shape:'box',   body:SILVER, mask:'frame', win:'split', light:'lowRound', stripes:[{y:72,h:8,c:'#9CAEB7'}] },
+  h3000   : { shape:'bulb',  body:'#cfd6de', mask:'none',  win:'split', light:'topPair',  stripes:[{y:74,h:6,c:'#9CAEB7'}], extra:['ribs'] },
+  t15000  : { shape:'box',   body:SILVER, mask:'full',  win:'pano',  light:'inMask',   stripes:[{y:70,h:5,c:'#00A7DB'},{y:76,h:2,c:'#ffffff'},{y:79,h:4,c:'#1d3f8f'}] },
+  t05     : { shape:'box',   body:SILVER, mask:'frame', win:'asymL', light:'lowRect',  stripes:[{y:70,h:6,c:'#00A7DB'},{y:77,h:3,c:'#1d3f8f'}] },
+  t07     : { shape:'dome',  body:SILVER, mask:'full',  win:'pano',  light:'lowRound', stripes:[{y:72,h:7,c:'#00A7DB'}] },
+  t5000   : { shape:'retro', body:'#cfd6de', mask:'none',  win:'split', light:'lowRound', stripes:[{y:72,h:9,c:'#00A7DB'}], extra:['ribs'] },
+  c16000  : { shape:'slant', body:'#eef1f3', mask:'full',  win:'asymL', light:'lowRect',  stripes:[{y:72,h:6,c:'#009944'}], faceAccent:'#7fd09a' },
+  c6000   : { shape:'slant', body:SILVER, mask:'frame', win:'asymL', light:'lowRect',  stripes:[{y:72,h:8,c:'#009944'}] },
+  y10000  : { shape:'dome',  body:SILVER, mask:'none',  win:'glass', light:'lowRound', stripes:[{y:80,h:5,c:'#C1A470'},{y:86,h:3,c:'#9C5E31'}] },
+  y17000  : { shape:'soft',  body:SILVER, mask:'full',  win:'pano',  light:'arc',      stripes:[{y:72,h:5,c:'#C1A470'},{y:78,h:3,c:'#9C5E31'}] },
+  y7000   : { shape:'slant', body:SILVER, mask:'frame', win:'asymL', light:'lowRect',  stripes:[{y:72,h:8,c:'#C1A470'}] },
+  z08     : { shape:'slant', body:SILVER, mask:'full',  win:'asymL', light:'inMask',   stripes:[{y:72,h:7,c:'#8F76D6'}] },
+  z18000  : { shape:'soft',  body:'#f3f3f6', mask:'full',  win:'pano',  light:'vertical', stripes:[{y:74,h:6,c:'#8F76D6'}], faceFrame:'#8F76D6' },
+  z8000   : { shape:'slant', body:SILVER, mask:'none',  win:'asymL', light:'lowRect',  stripes:[{y:72,h:8,c:'#8F76D6'}] },
+  n9000   : { shape:'soft',  body:SILVER, mask:'none',  win:'glass', light:'inMask',   stripes:[{y:80,h:7,c:'#00ADA9'}] },
+  // ---- 大阪メトロ ----
+  o30000m : { shape:'soft',  body:SILVER, mask:'full',  win:'pano',  light:'vertical', stripes:[{y:76,h:6,c:'#E5171F'}], faceFrame:'#E5171F' },
+  o30000m4: { shape:'soft',  body:SILVER, mask:'full',  win:'pano',  light:'vertical', stripes:[{y:76,h:6,c:'#E5171F'}], faceFrame:'#E5171F', extra:['sakura'] },
+  o21     : { shape:'box',   body:SILVER, mask:'full',  win:'pano',  light:'lowRect',  stripes:[{y:12,h:4,c:'#E5171F'},{y:72,h:8,c:'#E5171F'}] },
+  o23     : { shape:'box',   body:SILVER, mask:'full',  win:'pano',  light:'lowRect',  stripes:[{y:12,h:4,c:'#0078BA'},{y:72,h:8,c:'#0078BA'}] },
+  o400    : { shape:'space', body:'#eef1f4', mask:'none',  win:'glass', light:'arc',      stripes:[{y:86,h:4,c:'#019A66'}], extra:['spaceGreen'] },
+  o20     : { shape:'box',   body:SILVER, mask:'frame', win:'split', light:'lowRound', stripes:[{y:72,h:9,c:'#019A66'}] },
+  o25     : { shape:'box',   body:SILVER, mask:'full',  win:'pano',  light:'lowRect',  stripes:[{y:12,h:4,c:'#E44D93'},{y:72,h:8,c:'#E44D93'}] },
+  o66     : { shape:'box',   body:SILVER, mask:'full',  win:'pano',  light:'lowRect',  stripes:[{y:72,h:8,c:'#814721'}], extra:['pan'] },
+  o70     : { shape:'small', body:'#eef3e2', mask:'none',  win:'glass', light:'lowRound', stripes:[{y:78,h:8,c:'#A9CC51'}], faceAccent:'#A9CC51' },
+  o80     : { shape:'small', body:'#f6f2ec', mask:'full',  win:'pano',  light:'lowRect',  stripes:[{y:76,h:8,c:'#EE7B1A'}], faceAccent:'#EE7B1A' },
+  o200    : { shape:'tram',  body:'#ffffff', mask:'full',  win:'pano',  light:'lowRound', stripes:[{y:68,h:34,c:'#F08A1E'},{y:66,h:2,c:'#00A3D9'}], extra:['tires'] },
+  // ---- 谷町線 ----
+  t22     : { shape:'box',   body:SILVER, mask:'full',  win:'pano',  light:'lowRect',  stripes:[{y:12,h:4,c:'#522886'},{y:72,h:8,c:'#522886'}] },
+  t30000  : { shape:'soft',  body:SILVER, mask:'full',  win:'pano',  light:'vertical', stripes:[{y:76,h:6,c:'#522886'}], faceFrame:'#522886' },
+  t30000a : { shape:'soft',  body:'#f2f4f6', mask:'full',  win:'pano',  light:'vertical', stripes:[{y:96,h:3,c:'#C9A43A'}], extra:['dots'] },
+  t10     : { shape:'box',   body:'#cfd6de', mask:'frame', win:'split', light:'lowRound', stripes:[{y:72,h:9,c:'#E5171F'}] },
+  t30     : { shape:'box',   body:'#cfd6de', mask:'none',  win:'split', light:'lowRound', stripes:[{y:72,h:9,c:'#522886'}], extra:['ribs'] },
+};
+
+let svgSeq = 0;
+function shade(hex, amt){ // amt: -1〜1 （+で明るく）
+  const n = parseInt(hex.slice(1), 16);
+  let r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+  const t = amt < 0 ? 0 : 255, p = Math.abs(amt);
+  r = Math.round((t - r) * p + r); g = Math.round((t - g) * p + g); b = Math.round((t - b) * p + b);
+  return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+}
+function bodyPath(shape){
+  switch(shape){
+    case 'dome':  return 'M10 56 C10 18 30 10 60 10 C90 10 110 18 110 56 V104 Q110 112 102 112 H18 Q10 112 10 104 Z';
+    case 'bulb':  return 'M12 50 C12 14 34 8 60 8 C86 8 108 14 108 50 L110 104 Q110 112 102 112 H18 Q10 112 10 104 Z';
+    case 'slant': return 'M20 10 H100 Q107 10 108 18 L112 104 Q112 112 104 112 H16 Q8 112 8 104 L12 18 Q13 10 20 10 Z';
+    case 'space': return 'M10 64 C10 22 32 8 60 8 C88 8 110 22 110 64 V104 Q110 112 102 112 H18 Q10 112 10 104 Z';
+    case 'small': return 'M20 30 Q20 14 36 14 H84 Q100 14 100 30 V104 Q100 112 92 112 H28 Q20 112 20 104 Z';
+    case 'tram':  return 'M14 40 Q14 12 44 12 H76 Q106 12 106 40 V102 Q106 110 98 110 H22 Q14 110 14 102 Z';
+    case 'soft':  return 'M10 30 Q10 10 30 10 H90 Q110 10 110 30 V104 Q110 112 102 112 H18 Q10 112 10 104 Z';
+    case 'retro': return 'M10 18 Q10 10 18 10 H102 Q110 10 110 18 V104 Q110 112 102 112 H18 Q10 112 10 104 Z';
+    default:      return 'M10 18 Q10 10 18 10 H102 Q110 10 110 18 V104 Q110 112 102 112 H18 Q10 112 10 104 Z';
   }
-  s += '<rect x="8" y="' + top + '" width="84" height="' + (98 - top) + '" rx="' + rx + '" fill="' + body + '" stroke="' + edge + '" stroke-width="2.4"/>';
-  if(st === 'space'){
-    s += '<rect x="13" y="' + (top+6) + '" width="74" height="52" rx="26" fill="#18263f"/>';
-    s += '<path d="M20 ' + (top+18) + ' Q30 ' + (top+9) + ' 46 ' + (top+10) + '" stroke="rgba(255,255,255,.55)" stroke-width="3" fill="none" stroke-linecap="round"/>';
-    s += '<rect x="8" y="72" width="84" height="7" fill="' + stripe + '"/>';
-  } else {
-    // ゆき先 ひょうじ
-    s += '<rect x="30" y="' + (top+4) + '" width="40" height="7" rx="2" fill="#1b1f27"/>';
-    s += '<rect x="35" y="' + (top+6) + '" width="30" height="3" rx="1" fill="' + (locked ? '#8a93a5' : '#ffb347') + '"/>';
-    // まど
-    s += '<rect x="15" y="' + (top+15) + '" width="70" height="30" rx="' + (st==='round'||st==='dots' ? 10 : 5) + '" fill="#1e2b45"/>';
-    s += '<path d="M20 ' + (top+38) + ' L32 ' + (top+19) + ' L40 ' + (top+19) + ' L28 ' + (top+38) + 'Z" fill="rgba(255,255,255,.22)"/>';
-    if(st !== 'tram' && st !== 'small'){
-      // ひじょう口の とびら
-      s += '<rect x="39" y="' + (top+13) + '" width="22" height="' + (78 - top) + '" rx="3" fill="none" stroke="rgba(0,0,0,.28)" stroke-width="1.6"/>';
-    }
-    if(st === 'wide'){
-      s += '<rect x="8" y="58" width="84" height="5" fill="' + stripe + '"/><rect x="8" y="66" width="84" height="5" fill="' + stripe + '"/>';
-    } else if(st === 'retro'){
-      s += '<rect x="8" y="60" width="84" height="8" fill="' + stripe + '"/>';
-      s += '<circle cx="50" cy="' + (top+2) + '" r="0" fill="none"/>';
-    } else if(st !== 'dots'){
-      s += '<rect x="8" y="59" width="84" height="9" fill="' + stripe + '"/>';
-    }
-    if(it.line === 'YF' && !locked){
-      s += '<rect x="8" y="68" width="84" height="3" fill="' + L.color2 + '"/>';
-    }
-    if(it.id === 'm2000' || it.id === 'm300' || it.id === 'm500'){
-      if(!locked) s += '<path d="M8 72 Q20 66 32 72 T56 72 T80 72 T104 72" stroke="#fff" stroke-width="2.4" fill="none"/>';
-    }
+}
+function plainSeries(it){ return String(it.series).replace(/\[([^|\]]+)\|[^\]]+\]/g, '$1').split(' ')[0].replace(/[系形]$/, ''); }
+
+function trainSVG(it){
+  const D = DESIGN[it.id] || { shape:'box', body:SILVER, mask:'full', win:'pano', light:'lowRect', stripes:[] };
+  const id = 'tg' + (++svgSeq);
+  const ex = D.extra || [];
+  const small = D.shape === 'small';
+  const xL = small ? 20 : 10, xR = small ? 100 : 110, W = xR - xL;
+  const top = D.shape === 'small' ? 14 : (D.shape === 'bulb' || D.shape === 'space' ? 8 : 10);
+  const body = D.body;
+  let s = '<svg class="train-svg" viewBox="0 -8 120 140" aria-hidden="true"><defs>' +
+    '<linearGradient id="' + id + 'b" x1="0" y1="0" x2="1" y2="1">' +
+      '<stop offset="0" stop-color="' + shade(body, .55) + '"/><stop offset=".45" stop-color="' + body + '"/><stop offset="1" stop-color="' + shade(body, -.22) + '"/></linearGradient>' +
+    '<linearGradient id="' + id + 'g" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" stop-color="' + (ex.includes('sakura') ? '#f7b6cf' : '#4a6d92') + '"/><stop offset="1" stop-color="' + (ex.includes('sakura') ? '#8a3d63' : '#0f1726') + '"/></linearGradient>' +
+    '<linearGradient id="' + id + 'm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2e3442"/><stop offset="1" stop-color="#0d1017"/></linearGradient>' +
+    '<radialGradient id="' + id + 'l"><stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#fff3b0"/><stop offset="1" stop-color="#f2c94c"/></radialGradient>' +
+    '<clipPath id="' + id + 'c"><path d="' + bodyPath(D.shape) + '"/></clipPath>' +
+    '</defs>';
+
+  // かげ・レール
+  s += '<ellipse cx="60" cy="124" rx="50" ry="5" fill="rgba(0,0,0,.18)"/>';
+  s += '<rect x="4" y="120" width="112" height="3" rx="1.5" fill="#8b929c"/>';
+
+  // パンタグラフ
+  if(ex.includes('pan')){
+    s += '<g stroke="#3d4450" stroke-width="2.4" fill="none" stroke-linejoin="round"><path d="M38 10 L60 -2 L82 10"/><path d="M46 10 L60 2 L74 10"/></g>';
+    s += '<rect x="34" y="-6" width="52" height="3.4" rx="1.7" fill="#3d4450"/><path d="M60 -3 V-2" stroke="#3d4450" stroke-width="2"/><rect x="44" y="7" width="32" height="4" rx="1" fill="#59606d"/>';
   }
-  if(st === 'dots'){
-    DOTS.forEach((d, i) => {
-      if(d[1] > top+12 && d[1] < top+48 && d[0] > 12 && d[0] < 88) return; // まどの 上には かかない
-      const c = locked ? '#b7c0d1' : (i % 4 === 0 ? '#E0B03A' : (i % 3 === 0 ? '#8d95a3' : stripe));
-      s += '<circle cx="' + d[0] + '" cy="' + d[1] + '" r="' + (i % 2 ? 3.2 : 2.2) + '" fill="' + c + '"/>';
-    });
+
+  // 車体
+  s += '<path d="' + bodyPath(D.shape) + '" fill="url(#' + id + 'b)"/>';
+  s += '<g clip-path="url(#' + id + 'c)">';
+
+  // 屋根の 色
+  if(D.roof) s += '<rect x="0" y="0" width="120" height="' + (top + 9) + '" fill="' + D.roof + '"/>';
+  // ステンレスの すじ
+  if(ex.includes('ribs')){
+    for(let x = xL + 6; x < xR - 2; x += 6) s += '<rect x="' + x + '" y="84" width="1.4" height="22" fill="rgba(255,255,255,.55)"/><rect x="' + (x + 1.4) + '" y="84" width="1" height="22" fill="rgba(0,0,0,.12)"/>';
   }
+  // 帯
+  (D.stripes || []).forEach(st => { s += '<rect x="0" y="' + st.y + '" width="120" height="' + st.h + '" fill="' + st.c + '"/>'; });
+
+  // 顔の アクセント（色の 入った パネル）
+  if(D.faceAccent){
+    s += '<path d="M' + xL + ' 66 L' + (xL + 22) + ' 66 L' + (xL + 10) + ' 100 L' + xL + ' 100 Z" fill="' + D.faceAccent + '"/>';
+    s += '<path d="M' + xR + ' 66 L' + (xR - 22) + ' 66 L' + (xR - 10) + ' 100 L' + xR + ' 100 Z" fill="' + D.faceAccent + '"/>';
+  }
+
+  // 黒い 顔（マスク）
+  const mx = xL + 5, mw = W - 10;
+  if(D.mask === 'full'){
+    const my = D.shape === 'dome' ? 22 : top + 8;
+    const mh = 66 - my;
+    const mr = (D.shape === 'dome' || D.shape === 'tram' || D.shape === 'soft') ? 16 : 7;
+    if(D.faceFrame) s += '<rect x="' + (mx - 3) + '" y="' + (my - 3) + '" width="' + (mw + 6) + '" height="' + (mh + 6) + '" rx="' + (mr + 3) + '" fill="' + D.faceFrame + '"/>';
+    s += '<rect x="' + mx + '" y="' + my + '" width="' + mw + '" height="' + mh + '" rx="' + mr + '" fill="url(#' + id + 'm)"/>';
+  }
+
+  // まど
+  const wy = D.shape === 'dome' ? 30 : top + 16;
+  const wh = 62 - wy;
+  const glass = 'url(#' + id + 'g)';
+  const winRect = (x, y, w, h, r) => '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="' + r + '" fill="' + glass + '" stroke="#0b0e14" stroke-width="1"/>' +
+    '<path d="M' + (x + 3) + ' ' + (y + h - 3) + ' L' + (x + w * 0.32) + ' ' + (y + 3) + ' L' + (x + w * 0.44) + ' ' + (y + 3) + ' L' + (x + w * 0.15) + ' ' + (y + h - 3) + ' Z" fill="rgba(255,255,255,.22)"/>';
+  const doorRect = (x, w) => '<rect x="' + x + '" y="' + (wy - 4) + '" width="' + w + '" height="' + (100 - wy) + '" rx="3" fill="none" stroke="rgba(0,0,0,.35)" stroke-width="1.6"/>' + winRect(x + 3, wy, w - 6, wh - 4, 3);
+  const frameBlack = (x, w) => D.mask === 'frame' ? '<rect x="' + (x - 3) + '" y="' + (wy - 3) + '" width="' + (w + 6) + '" height="' + (wh + 6) + '" rx="5" fill="#141922"/>' : '';
+  if(D.win === 'pano'){
+    s += frameBlack(xL + 10, W - 20) + winRect(xL + 10, wy, W - 20, wh, D.shape === 'dome' || D.shape === 'tram' ? 12 : 5);
+    if(!['tram','small'].includes(D.shape) && D.mask !== 'full') s += doorRect(xL + W/2 - 11, 22);
+    if(D.mask === 'full' && !['tram','small','dome'].includes(D.shape)) s += '<rect x="' + (xL + W/2 - 1) + '" y="' + wy + '" width="2" height="' + wh + '" fill="rgba(0,0,0,.6)"/>';
+  } else if(D.win === 'split'){
+    const ww = (W - 20 - 26) / 2;
+    s += frameBlack(xL + 8, ww) + winRect(xL + 8, wy, ww, wh - 6, 4);
+    s += frameBlack(xR - 8 - ww, ww) + winRect(xR - 8 - ww, wy, ww, wh - 6, 4);
+    s += doorRect(xL + W/2 - 12, 24);
+  } else if(D.win === 'asymL' || D.win === 'asymR'){
+    const dw = 24, bw = W - 16 - dw - 6;
+    const dx = D.win === 'asymL' ? xL + 8 : xR - 8 - dw;
+    const bx = D.win === 'asymL' ? dx + dw + 6 : xL + 8;
+    s += frameBlack(bx, bw) + winRect(bx, wy, bw, wh, 5);
+    s += doorRect(dx, dw);
+  } else if(D.win === 'three'){
+    const ww = (W - 16 - 8) / 3;
+    for(let i = 0; i < 3; i++) s += winRect(xL + 8 + i * (ww + 4), wy + 2, ww, wh - 6, 4);
+  } else if(D.win === 'glass'){
+    const gy = D.shape === 'space' ? 14 : top + 8;
+    const gh = D.shape === 'space' ? 58 : 58 - top;
+    s += '<rect x="' + (xL + 6) + '" y="' + gy + '" width="' + (W - 12) + '" height="' + gh + '" rx="' + (D.shape === 'space' ? 28 : 18) + '" fill="' + glass + '" stroke="#0b0e14" stroke-width="1.2"/>';
+    s += '<path d="M' + (xL + 16) + ' ' + (gy + gh - 10) + ' Q' + (xL + 20) + ' ' + (gy + 10) + ' ' + (xL + W * 0.48) + ' ' + (gy + 8) + '" stroke="rgba(255,255,255,.45)" stroke-width="4" fill="none" stroke-linecap="round"/>';
+    // まどの 中の うんてん台
+    s += '<rect x="' + (xL + W/2 - 14) + '" y="' + (gy + gh - 12) + '" width="28" height="8" rx="3" fill="rgba(0,0,0,.45)"/>';
+  }
+
+  // 行き先 ひょうじ
+  if(D.win !== 'glass' && D.shape !== 'retro' && D.shape !== 'bulb'){
+    const dy = D.shape === 'dome' ? 22 : top + 7;
+    s += '<rect x="42" y="' + dy + '" width="36" height="7" rx="1.5" fill="#05070b"/><rect x="45" y="' + (dy + 2) + '" width="30" height="3" rx="1" fill="#ffae2b"/>';
+  }
+
+  // うちゅう船の 緑の ライン
+  if(ex.includes('spaceGreen')){
+    s += '<path d="M14 80 Q60 96 106 80" stroke="#019A66" stroke-width="4" fill="none"/>';
+  }
+  // サインウェーブ
+  if(ex.includes('sineWhite') || ex.includes('sineRed')){
+    const c = ex.includes('sineWhite') ? '#ffffff' : '#E60012';
+    const y0 = ex.includes('sineRed') ? 75.5 : 74.5;
+    let d = 'M0 ' + y0;
+    for(let x = 0; x < 120; x += 12) d += ' q3 -4 6 0 t6 0';
+    s += '<path d="' + d + '" stroke="' + c + '" stroke-width="1.8" fill="none"/>';
+  }
+  // ドット（30000A系）
+  if(ex.includes('dots')){
+    const pts = [[16,70,3.2,'#522886'],[26,78,2.2,'#8d95a3'],[34,88,3,'#C9A43A'],[18,92,2,'#ffffff'],[24,100,3,'#522886'],[40,74,2,'#8d95a3'],
+                 [104,70,3.2,'#522886'],[94,80,2.2,'#C9A43A'],[86,90,3,'#8d95a3'],[102,94,2,'#522886'],[96,102,2.6,'#C9A43A'],[80,74,2,'#522886'],
+                 [50,84,2,'#C9A43A'],[70,86,2.4,'#522886'],[60,100,2,'#8d95a3'],[14,20,2.4,'#522886'],[106,22,2.4,'#C9A43A'],[60,16,2,'#8d95a3']];
+    pts.forEach(p => { s += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="' + p[2] + '" fill="' + p[3] + '" stroke="rgba(0,0,0,.12)" stroke-width=".5"/>'; });
+  }
+  // リベット
+  if(ex.includes('rivets')){
+    for(let x = xL + 5; x < xR - 2; x += 7){ s += '<circle cx="' + x + '" cy="' + (top + 4) + '" r=".9" fill="rgba(0,0,0,.35)"/><circle cx="' + x + '" cy="80" r=".9" fill="rgba(0,0,0,.35)"/>'; }
+  }
+
   // ライト
-  const ly = st === 'space' ? 86 : 80;
-  s += '<circle cx="22" cy="' + ly + '" r="5" fill="' + (locked ? '#e4e8ef' : '#fff6c4') + '" stroke="' + edge + '" stroke-width="1.4"/>';
-  s += '<circle cx="78" cy="' + ly + '" r="5" fill="' + (locked ? '#e4e8ef' : '#fff6c4') + '" stroke="' + edge + '" stroke-width="1.4"/>';
-  if(st === 'retro'){
-    s += '<circle cx="50" cy="' + (top+3) + '" r="3.5" fill="' + (locked ? '#e4e8ef' : '#fff6c4') + '" stroke="' + edge + '" stroke-width="1.2"/>';
+  const lamp = (cx, cy, r) => '<circle cx="' + cx + '" cy="' + cy + '" r="' + (r + 1.6) + '" fill="#3a404b"/><circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="url(#' + id + 'l)"/>';
+  const lampR = (x, y, w, h) => '<rect x="' + (x - 1.5) + '" y="' + (y - 1.5) + '" width="' + (w + 3) + '" height="' + (h + 3) + '" rx="2.5" fill="#2b3039"/><rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="1.5" fill="url(#' + id + 'l)"/>' +
+    '<rect x="' + (x + w + 2) + '" y="' + y + '" width="' + (w * 0.5) + '" height="' + h + '" rx="1.5" fill="#d8392b"/>';
+  switch(D.light){
+    case 'lowRound':  s += lamp(xL + 13, 92, 5) + lamp(xR - 13, 92, 5); break;
+    case 'lowRect':   s += lampR(xL + 6, 88, 11, 6) + lampR(xR - 23, 88, 11, 6); break;
+    case 'topPair':   s += lamp(xL + 18, top + 7, 4) + lamp(xR - 18, top + 7, 4); break;
+    case 'topSingle': s += lamp(60, top + 5, 4.5); break;
+    case 'inMask':    s += lampR(xL + 9, 56, 12, 5) + lampR(xR - 27, 56, 12, 5); break;
+    case 'vertical':  s += '<rect x="' + (xL + 4) + '" y="64" width="6" height="22" rx="3" fill="url(#' + id + 'l)" stroke="#2b3039" stroke-width="1.2"/><rect x="' + (xR - 10) + '" y="64" width="6" height="22" rx="3" fill="url(#' + id + 'l)" stroke="#2b3039" stroke-width="1.2"/>'; break;
+    case 'arc':       s += '<path d="M' + (xL + 8) + ' 92 Q' + (xL + 18) + ' 98 ' + (xL + 30) + ' 96" stroke="#fff3b0" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M' + (xR - 8) + ' 92 Q' + (xR - 18) + ' 98 ' + (xR - 30) + ' 96" stroke="#fff3b0" stroke-width="4" fill="none" stroke-linecap="round"/>'; break;
   }
-  // スカート
-  s += '<rect x="16" y="94" width="68" height="7" rx="2" fill="#3a3f4a"/>';
-  if(st === 'tram'){
-    s += '<circle cx="28" cy="101" r="6" fill="#23272e"/><circle cx="72" cy="101" r="6" fill="#23272e"/>';
-  }
+
+  // ばんごう プレート
+  const num = plainSeries(it);
+  const pw = Math.max(18, num.length * 5 + 6);
+  s += '<rect x="' + (60 - pw/2) + '" y="88" width="' + pw + '" height="9" rx="2" fill="rgba(255,255,255,.92)" stroke="rgba(0,0,0,.35)" stroke-width=".8"/>';
+  s += '<text x="60" y="95" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="7" fill="#1b2130">' + num + '</text>';
+
+  // スカート・連けつき
+  s += '<rect x="0" y="102" width="120" height="12" fill="#30353f"/>';
+  s += '<rect x="54" y="103" width="12" height="7" rx="2" fill="#555c68"/>';
+  s += '</g>';
+
+  // ふちどり
+  s += '<path d="' + bodyPath(D.shape) + '" fill="none" stroke="#2c3442" stroke-width="2.6" stroke-linejoin="round"/>';
+  // ハイライト
+  s += '<path d="M' + (xL + 6) + ' ' + (top + 30) + ' Q' + (xL + 6) + ' ' + (top + 6) + ' ' + (xL + 26) + ' ' + (top + 5) + '" stroke="rgba(255,255,255,.7)" stroke-width="2.4" fill="none" stroke-linecap="round"/>';
+  // ゴムタイヤ
+  if(ex.includes('tires')) s += '<rect x="20" y="110" width="16" height="10" rx="4" fill="#1b1e24"/><rect x="84" y="110" width="16" height="10" rx="4" fill="#1b1e24"/>';
   s += '</svg>';
   return s;
 }
