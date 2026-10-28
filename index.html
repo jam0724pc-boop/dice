@@ -603,6 +603,45 @@
   .dev-fab:hover{ opacity:1; }
   .dev-fab:active{ transform:scale(.9); opacity:1; }
   .dev-note{ font-weight:800; color:var(--ink-soft); font-size:13px; margin-bottom:12px; }
+  .dev-tabs{ display:flex; gap:8px; margin-bottom:12px; }
+  .dev-tab{ flex:1; font-family:'Mochiy Pop P One'; font-size:14px; padding:10px; border-radius:14px; cursor:pointer;
+    background:#eef2fb; color:var(--ink-soft); border:3px solid #c9d3ef; }
+  .dev-tab.active{ background:var(--ink); color:#fff; border-color:var(--ink); }
+  .rate-row{ display:grid; grid-template-columns:118px 40px 1fr 40px 62px; gap:8px; align-items:center;
+    padding:10px; border-radius:14px; margin-bottom:8px; border:3px solid; }
+  .rate-row.s{ background:#fff8e0; border-color:#f0c040; }
+  .rate-row.r{ background:#f4eeff; border-color:var(--purple); }
+  .rate-row.n{ background:#eef6ff; border-color:var(--blue); }
+  .rate-name{ font-family:'Mochiy Pop P One'; font-size:13px; color:var(--ink); }
+  .rate-step{ width:40px; height:40px; border-radius:50%; border:3px solid var(--ink); background:#fff; font-size:20px; font-weight:800; cursor:pointer; color:var(--ink); }
+  .rate-step:active{ transform:scale(.92); }
+  .rate-slider{ width:100%; accent-color:var(--ink); height:28px; }
+  .rate-val{ font-family:'Mochiy Pop P One'; font-size:20px; text-align:right; color:var(--ink); }
+  @media (max-width:520px){ .rate-row{ grid-template-columns:1fr 40px 40px 62px; } .rate-slider{ grid-column:1 / -1; order:5; } }
+  .rate-presets{ display:flex; flex-wrap:wrap; gap:8px; margin:10px 0; }
+  .rate-preset{ font-weight:800; font-size:13px; padding:8px 12px; border-radius:999px; cursor:pointer; background:#fff; color:var(--ink); border:3px solid #c9d3ef; }
+  .rate-preset:active{ transform:translateY(2px); }
+  .rate-each{ font-weight:700; font-size:13px; color:var(--ink-soft); line-height:1.8; background:#f6f8fc; border-radius:12px; padding:8px 12px; }
+  .dev-mode{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:10px; }
+  .dev-mode-label{ font-weight:800; color:var(--ink-soft); font-size:13px; }
+  .dev-modebtn{ font-weight:800; font-size:13px; padding:8px 12px; border-radius:999px; cursor:pointer; background:#fff; color:var(--ink); border:3px solid #c9d3ef; }
+  .dev-modebtn.active{ background:var(--green); color:#fff; border-color:var(--green-deep); }
+
+  .pw-card{ background:var(--panel); border:6px solid var(--ink); border-radius:28px; padding:18px 20px 20px; width:min(340px,92vw); text-align:center;
+    box-shadow:0 14px 0 var(--shadow), 0 22px 44px rgba(0,0,0,.34); }
+  .pw-card.ng{ animation:coinLose .45s ease; }
+  .pw-title{ font-family:'Mochiy Pop P One'; font-size:20px; color:var(--ink); }
+  .pw-sub{ font-weight:800; color:var(--ink-soft); font-size:13px; margin:4px 0 12px; }
+  .pw-dots{ display:flex; justify-content:center; gap:14px; margin-bottom:6px; }
+  .pw-dots span{ width:18px; height:18px; border-radius:50%; border:3px solid var(--ink); background:#fff; }
+  .pw-dots span.on{ background:var(--ink); }
+  .pw-msg{ min-height:20px; font-weight:800; font-size:13px; color:var(--red-deep); margin-bottom:8px; }
+  .pw-pad{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .pw-pad button{ height:58px; border-radius:16px; border:4px solid var(--ink); background:#fff; color:var(--ink);
+    font-family:'Mochiy Pop P One'; font-size:24px; cursor:pointer; box-shadow:0 4px 0 var(--shadow); }
+  .pw-pad button:active{ transform:translateY(3px); box-shadow:0 1px 0 var(--shadow); }
+  .pw-pad .pw-cancel{ font-size:14px; background:#eef1f8; }
+  .pw-pad .pw-back{ font-size:20px; background:#eef1f8; }
   .dev-actions{ display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
   .dev-action{ flex:1; min-width:130px; font-family:'Mochiy Pop P One'; font-size:14px; color:#fff;
     padding:11px 12px; border-radius:14px; cursor:pointer; border:4px solid; }
@@ -624,6 +663,43 @@
     box-shadow:0 6px 16px rgba(0,0,0,.3);
   }
   .save-toast.show{ opacity:.96; transform:translateX(-50%) translateY(0); }
+
+  /* ===== でんしゃ カード ===== */
+  ruby rt{ font-size:.5em; font-weight:700; letter-spacing:0; }
+  .gacha-stage{ width:min(470px,94vw); }
+  .gacha-item{ padding:14px 18px 14px; max-height:88dvh; overflow-y:auto; }
+  .train-card{ text-align:center; }
+  .tc-top{ display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:4px; }
+  .tc-co{ font-family:'Mochiy Pop P One'; font-size:13px; color:#fff; padding:3px 12px; border-radius:999px; }
+  .tc-co.tokyo{ background:#2f9fd8; }
+  .tc-co.osaka{ background:#e5171f; }
+  .tc-old{ font-weight:800; font-size:12px; color:#8a5a00; background:#fff1c2; border:2px solid #e0b03a; padding:1px 10px; border-radius:999px; }
+  .tc-now{ font-weight:800; font-size:12px; color:var(--green-deep); background:#eafff0; border:2px solid #9be0a5; padding:1px 10px; border-radius:999px; }
+  .tc-art{ width:min(190px,46vw); margin:2px auto 0; animation:itemFloat 2.4s ease-in-out infinite; }
+  .tc-art .train-svg{ width:100%; height:auto; display:block; filter:drop-shadow(0 8px 10px rgba(0,0,0,.18)); }
+  .tc-line{ display:flex; align-items:center; justify-content:center; gap:6px; font-weight:800; font-size:16px; color:var(--ink); margin-top:4px; }
+  .lbadge{ display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%;
+    background:#fff; border:4px solid var(--lc); color:var(--ink); font-family:'Mochiy Pop P One'; font-size:12px; line-height:1; flex:none; }
+  .tc-name{ font-family:'Mochiy Pop P One'; font-size:clamp(24px,6.5vw,34px); color:var(--ink); margin:2px 0 6px; line-height:1.3; }
+  .tc-desc{ font-weight:800; font-size:16px; color:var(--ink); line-height:1.9; margin-bottom:10px; }
+  .tc-mania{ text-align:left; background:#f2f6ff; border:3px dashed #9fb3e6; border-radius:16px; padding:8px 12px 10px; }
+  .tc-mania-h{ font-family:'Mochiy Pop P One'; font-size:13px; color:var(--blue-deep); margin-bottom:2px; }
+  .tc-mania-b{ font-weight:700; font-size:14px; color:var(--ink); line-height:2; }
+  .gi-rarity ruby rt{ color:inherit; }
+
+  .detail-overlay{ z-index:55; }
+  .detail-card{ background:var(--panel); border:6px solid var(--ink); border-radius:30px; padding:14px 18px;
+    width:min(470px,94vw); max-height:90dvh; overflow-y:auto; text-align:center;
+    box-shadow:0 14px 0 var(--shadow), 0 22px 44px rgba(0,0,0,.34); animation:itemPop .4s cubic-bezier(.2,1.6,.45,1); }
+
+  /* ずかんの セル */
+  .coll-art{ width:72%; display:block; z-index:1; }
+  .coll-art .train-svg{ width:100%; height:auto; display:block; }
+  .coll-cell.locked .coll-art{ opacity:.45; }
+  .coll-line{ display:flex; gap:2px; z-index:1; }
+  .coll-line .lbadge{ width:18px; height:18px; border-width:3px; font-size:9px; }
+  .coll-cell{ aspect-ratio:auto; min-height:118px; padding:6px 2px; }
+  .coll-name{ font-size:11px; line-height:1.5; }
 
   /* ===== iPad 11インチ 横画面さいてきか（横長・低い画面） ===== */
   @media (min-width:1000px) and (orientation:landscape){
@@ -727,7 +803,7 @@
         🎁 ガチャをまわす <small>10まい</small>
       </button>
       <button class="reward-btn collection" id="collectionBtn" type="button">
-        📒 なかま ずかん <small id="collCount">0／30</small>
+        🚇 でんしゃ ずかん <small id="collCount">0／40</small>
       </button>
     </div>
   </section>
@@ -767,8 +843,7 @@
     <div class="gacha-item" id="gachaItem">
       <div class="gi-rarity" id="giRarity"></div>
       <div class="gi-stars" id="giStars"></div>
-      <div class="gi-emoji" id="giEmoji">⭐</div>
-      <div class="gi-name" id="giName">ほし</div>
+      <div class="train-card" id="giBody"></div>
       <div class="gi-dup" id="giDup"></div>
       <div class="gacha-actions">
         <button class="gbtn again" id="gachaAgain" type="button">もう1かい（10まい）</button>
@@ -782,19 +857,28 @@
 <div class="coll-overlay" id="collOverlay">
   <div class="coll-card">
     <div class="coll-head">
-      <span>🌟 なかま ずかん</span>
+      <span>🚇 でんしゃ ずかん</span>
       <button class="coll-close" id="collClose" type="button">とじる</button>
     </div>
     <div class="coll-progress">
-      <div class="coll-sub" id="collSub">あつめた しゅるい 0／30</div>
+      <div class="coll-sub" id="collSub">あつめた しゅるい 0／40</div>
       <div class="coll-bar"><div class="coll-bar-fill" id="collBarFill"></div></div>
     </div>
     <div class="coll-complete" id="collComplete">🎉 ぜんぶ あつめたよ！コンプリート！ 🎉</div>
     <div id="collSections"></div>
     <div class="coll-footer">
-      <div class="coll-saveinfo">✅ なかまと コインは、この タブレットに じどうで ほぞんされます</div>
+      <div class="coll-saveinfo">✅ あつめた 電車と コインは、この タブレットに じどうで ほぞんされます</div>
       <button class="coll-reset" id="collReset" type="button">さいしょから やりなおす</button>
     </div>
+  </div>
+</div>
+
+<!-- 電車の くわしい カード（ずかんから） -->
+<div class="coll-overlay detail-overlay" id="detailOverlay">
+  <div class="detail-card">
+    <div class="gi-rarity" id="dtRarity"></div>
+    <div class="train-card" id="dtBody"></div>
+    <div class="gacha-actions"><button class="gbtn done" id="dtClose" type="button">とじる</button></div>
   </div>
 </div>
 
@@ -805,12 +889,73 @@
       <span>🛠 開発者メニュー</span>
       <button class="coll-close" id="devClose" type="button">とじる</button>
     </div>
-    <div class="dev-note">キャラクターを タップすると、ガチャで出たことにして「なかま ずかん」に ついかします。</div>
-    <div class="dev-actions">
-      <button class="dev-action all" id="devAll" type="button">✨ ぜんぶ ゲット</button>
-      <button class="dev-action clear" id="devClear" type="button">🗑 ぜんぶ けす</button>
+    <div class="dev-tabs">
+      <button class="dev-tab active" data-tab="rates" type="button">🎯 出る かくりつ</button>
+      <button class="dev-tab" data-tab="list" type="button">🚇 ガチャの 中身</button>
     </div>
-    <div id="devSections"></div>
+
+    <!-- 出る かくりつ -->
+    <div class="dev-panel" id="devPanelRates">
+      <div class="dev-note">それぞれの 出やすさを えらんでね。合計が 100％に なるよう 自動で 計算します。</div>
+      <div class="rate-row s">
+        <div class="rate-name">★★★ 谷町線</div>
+        <button class="rate-step" data-k="s" data-d="-5" type="button">−</button>
+        <input class="rate-slider" type="range" min="0" max="100" step="1" data-k="s">
+        <button class="rate-step" data-k="s" data-d="5" type="button">＋</button>
+        <div class="rate-val" id="rateVal_s"></div>
+      </div>
+      <div class="rate-row r">
+        <div class="rate-name">★★ 大阪メトロ</div>
+        <button class="rate-step" data-k="r" data-d="-5" type="button">−</button>
+        <input class="rate-slider" type="range" min="0" max="100" step="1" data-k="r">
+        <button class="rate-step" data-k="r" data-d="5" type="button">＋</button>
+        <div class="rate-val" id="rateVal_r"></div>
+      </div>
+      <div class="rate-row n">
+        <div class="rate-name">★ 東京メトロ</div>
+        <button class="rate-step" data-k="n" data-d="-5" type="button">−</button>
+        <input class="rate-slider" type="range" min="0" max="100" step="1" data-k="n">
+        <button class="rate-step" data-k="n" data-d="5" type="button">＋</button>
+        <div class="rate-val" id="rateVal_n"></div>
+      </div>
+      <div class="rate-presets">
+        <button class="rate-preset" data-p="60,30,10" type="button">ふつう（60/30/10）</button>
+        <button class="rate-preset" data-p="34,33,33" type="button">みんな 同じ くらい</button>
+        <button class="rate-preset" data-p="20,30,50" type="button">谷町線 出やすい</button>
+        <button class="rate-preset" data-p="0,0,100" type="button">谷町線 だけ</button>
+      </div>
+      <div class="rate-each" id="rateEach"></div>
+    </div>
+
+    <!-- ガチャの 中身 -->
+    <div class="dev-panel" id="devPanelList" hidden>
+      <div class="dev-mode">
+        <span class="dev-mode-label">タップしたら：</span>
+        <button class="dev-modebtn active" data-mode="view" type="button">👀 くわしく 見る</button>
+        <button class="dev-modebtn" data-mode="give" type="button">➕ ずかんに ついか</button>
+      </div>
+      <div class="dev-actions">
+        <button class="dev-action all" id="devAll" type="button">✨ ぜんぶ ゲット</button>
+        <button class="dev-action clear" id="devClear" type="button">🗑 ぜんぶ けす</button>
+      </div>
+      <div id="devSections"></div>
+    </div>
+  </div>
+</div>
+
+<!-- 先生用 パスワード -->
+<div class="coll-overlay" id="pwOverlay">
+  <div class="pw-card" id="pwCard">
+    <div class="pw-title">🔒 先生用 メニュー</div>
+    <div class="pw-sub">パスワードを 入れてください</div>
+    <div class="pw-dots" id="pwDots"><span></span><span></span><span></span><span></span></div>
+    <div class="pw-msg" id="pwMsg"></div>
+    <div class="pw-pad">
+      <button type="button" data-n="1">1</button><button type="button" data-n="2">2</button><button type="button" data-n="3">3</button>
+      <button type="button" data-n="4">4</button><button type="button" data-n="5">5</button><button type="button" data-n="6">6</button>
+      <button type="button" data-n="7">7</button><button type="button" data-n="8">8</button><button type="button" data-n="9">9</button>
+      <button type="button" class="pw-cancel" id="pwCancel">やめる</button><button type="button" data-n="0">0</button><button type="button" class="pw-back" id="pwBack">⌫</button>
+    </div>
   </div>
 </div>
 
@@ -954,6 +1099,8 @@ let coins = 10;
 let rolling = false;
 let currentColor = 'blue';
 let currentPreset = 'red';
+let gachaRates = { n:60, r:30, s:10 };   // ガチャの 出やすさ（先生メニューで かえられる）
+let devUnlocked = false;
 let saveReady = false;   // 読みこみが おわるまで ほぞんしない
 
 const diceArea   = document.getElementById('diceArea');
@@ -1170,7 +1317,7 @@ function saveState(announce){
   if(!saveReady) return;          // 読みこみ中は ほぞんしない
   try{
     const customText = (document.getElementById('customInput') || {}).value || '';
-    const data = { v:2, coins, collection, color:currentColor, preset:currentPreset, customText };
+    const data = { v:2, coins, collection, color:currentColor, preset:currentPreset, customText, rates:gachaRates };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     if(announce) showSaved();
   }catch(e){ /* プレビューなど ほぞんできない環境は そのまま続行 */ }
@@ -1189,6 +1336,10 @@ function loadState(){
     }
     if(d.color && DICE_COLORS[d.color]) currentColor = d.color;
     if(d.preset && (PRESETS[d.preset] || d.preset === 'custom')) currentPreset = d.preset;
+    if(d.rates && ['n','r','s'].every(k => typeof d.rates[k] === 'number' && d.rates[k] >= 0) &&
+       (d.rates.n + d.rates.r + d.rates.s) > 0){
+      gachaRates = { n:d.rates.n, r:d.rates.r, s:d.rates.s };
+    }
     if(typeof d.customText === 'string' && d.customText.trim() !== ''){
       const ci = document.getElementById('customInput');
       if(ci) ci.value = d.customText;
@@ -1422,49 +1573,258 @@ jumpBtn.addEventListener('click', () => {
    ガチャ ＆ コレクション
    ========================================================= */
 const GACHA_COST = 10;
-// ※パーティゲーム風の「オリジナルなかまキャラクター」図鑑（実在キャラクターは使っていません）
+// ===== でんしゃ ずかん（東京メトロ＝ノーマル／大阪メトロ＝レア／谷町線＝スーパーレア）=====
+// 文字のルール：小学2年生までの かん字は そのまま、ほかは [かん字|よみ] で ふりがな
+const LINES = {
+  G : { name:'[銀座|ぎんざ]線', letter:'G', color:'#F39700', co:'tokyo' },
+  M : { name:'丸ノ内線',        letter:'M', color:'#E60012', co:'tokyo' },
+  H : { name:'日[比|び]谷線',   letter:'H', color:'#9CAEB7', co:'tokyo' },
+  T : { name:'東西線',          letter:'T', color:'#00A7DB', co:'tokyo' },
+  C : { name:'千[代|よ]田線',   letter:'C', color:'#009944', co:'tokyo' },
+  YF: { name:'[有|ゆう]楽町線・[副都|ふくと]心線', letter:'Y', letter2:'F', color:'#C1A470', color2:'#9C5E31', co:'tokyo' },
+  Z : { name:'半[蔵|ぞう]門線', letter:'Z', color:'#8F76D6', co:'tokyo' },
+  N : { name:'南北線',          letter:'N', color:'#00ADA9', co:'tokyo' },
+  oM: { name:'[御堂筋|みどうすじ]線', letter:'M', color:'#E5171F', co:'osaka' },
+  oT: { name:'谷町線',          letter:'T', color:'#522886', co:'osaka' },
+  oY: { name:'四つ[橋|ばし]線', letter:'Y', color:'#0078BA', co:'osaka' },
+  oC: { name:'中[央|おう]線',   letter:'C', color:'#019A66', co:'osaka' },
+  oS: { name:'千日前線',        letter:'S', color:'#E44D93', co:'osaka' },
+  oK: { name:'[堺筋|さかいすじ]線', letter:'K', color:'#814721', co:'osaka' },
+  oN: { name:'長[堀|ほり][鶴|つる]見[緑|りょく]地線', letter:'N', color:'#A9CC51', co:'osaka' },
+  oI: { name:'今里[筋|すじ]線', letter:'I', color:'#EE7B1A', co:'osaka' },
+  oP: { name:'ニュートラム',    letter:'P', color:'#00A3D9', co:'osaka' },
+};
+const COMPANY = { tokyo:'東京メトロ', osaka:'大[阪|さか]メトロ' };
+
 const ITEMS = [
-  // ノーマル（よく出る なかま）— 14体
-  {id:'piyo',  emoji:'🐤', name:'ぴよすけ',     rarity:'n'},
-  {id:'pyon',  emoji:'🐸', name:'ぴょん太',     rarity:'n'},
-  {id:'nyan',  emoji:'🐱', name:'ニャン吉',     rarity:'n'},
-  {id:'mimi',  emoji:'🐰', name:'ミミちゃん',   rarity:'n'},
-  {id:'moko',  emoji:'🐻', name:'くまのモコ',   rarity:'n'},
-  {id:'pen',   emoji:'🐧', name:'ペンちゃん',   rarity:'n'},
-  {id:'kame',  emoji:'🐢', name:'のんびりガメ', rarity:'n'},
-  {id:'wan',   emoji:'🐶', name:'わんすけ',     rarity:'n'},
-  {id:'chu',   emoji:'🐭', name:'ちゅう太',     rarity:'n'},
-  {id:'hamu',  emoji:'🐹', name:'ハムりん',     rarity:'n'},
-  {id:'buu',   emoji:'🐷', name:'ぶうこ',       rarity:'n'},
-  {id:'moo',   emoji:'🐮', name:'もーちゃん',   rarity:'n'},
-  {id:'kokko', emoji:'🐔', name:'こっこ',       rarity:'n'},
-  {id:'mee',   emoji:'🐑', name:'メエこ',       rarity:'n'},
-  // レア（ちょっと めずらしい なかま）— 10体
-  {id:'kon',   emoji:'🦊', name:'きつねのコンちゃん', rarity:'r'},
-  {id:'tora',  emoji:'🐯', name:'トラきち',     rarity:'r'},
-  {id:'hoo',   emoji:'🦉', name:'ホー博士',     rarity:'r'},
-  {id:'panda', emoji:'🐼', name:'パンだ太郎',   rarity:'r'},
-  {id:'leo',   emoji:'🦁', name:'レオキング',   rarity:'r'},
-  {id:'tako',  emoji:'🐙', name:'タコすけ',     rarity:'r'},
-  {id:'rasu',  emoji:'🦝', name:'あらいぐまラスくん', rarity:'r'},
-  {id:'sui',   emoji:'🦦', name:'かわうそスイ', rarity:'r'},
-  {id:'hari',  emoji:'🦔', name:'ハリーくん',   rarity:'r'},
-  {id:'kero',  emoji:'🐲', name:'みずうみのケロロン', rarity:'r'},
-  // スーパーレア（めったに 会えない スターなかま）— 6体
-  {id:'gao',   emoji:'🐉', name:'ドラゴンのガオくん',   rarity:'s'},
-  {id:'kirari',emoji:'🦄', name:'ユニコーンのキラリ',   rarity:'s'},
-  {id:'zaurus',emoji:'🦖', name:'きょうりゅうザウルス', rarity:'s'},
-  {id:'puu',   emoji:'👻', name:'おばけのプー',         rarity:'s'},
-  {id:'robo',  emoji:'🤖', name:'ロボのピカル',         rarity:'s'},
-  {id:'phoenix',emoji:'🦅', name:'ほのおのフェニー',    rarity:'s'},
+  // ===================== ★ ノーマル：東京メトロ（24しゅるい）=====================
+  { id:'g1000', rarity:'n', line:'G', series:'1000[系|けい]', body:'#FFC81E', stripe:'#F39700', style:'round',
+    desc:'黄色い 体が 目立つ、[銀座|ぎんざ]線の 電車。',
+    mania:'2012年に とうじょう。むかしの [旧|きゅう]1000形を イメージした 黄色。カーブの 多い [銀座|ぎんざ]線でも 走りやすい「そうだ台車」を つかっているよ。' },
+  { id:'g1000sp', rarity:'n', line:'G', series:'1000[系|けい] とくべつ しよう車', body:'#F3B700', stripe:'#7a4a12', style:'retro',
+    desc:'むかしの 電車に そっくりな、レトロな 1000[系|けい]。',
+    mania:'2017年に 2へんせい だけ 作られたよ。車内の あかりや 手すりも むかし風。見つけたら ラッキー！' },
+  { id:'kyu1000', rarity:'n', line:'G', series:'[旧|きゅう]1000形', body:'#F3B700', stripe:'#B3261E', style:'retro', old:true,
+    desc:'1927年、日本で はじめての 地下てつを 走った 電車。',
+    mania:'[上野|うえの]〜[浅草|あさくさ]を 走ったよ。いまは 国の「じゅうよう ぶんかざい」に なって、地下てつ はくぶつかんに いるんだ。' },
+  { id:'g01', rarity:'n', line:'G', series:'01[系|けい]', body:'#E3E8EE', stripe:'#F39700', style:'std', old:true,
+    desc:'オレンジの 線で、[銀座|ぎんざ]線を 長く 走った 電車。',
+    mania:'1980年[代|だい]に とうじょうして、2017年に 引たい。そのあと [熊本|くまもと]電[鉄|てつ]へ 行って「01形」として 走っているよ。' },
+  { id:'m2000', rarity:'n', line:'M', series:'2000[系|けい]', body:'#E60012', stripe:'#FFFFFF', style:'round',
+    desc:'まっ赤で まあるい、丸ノ内線の 電車！',
+    mania:'2019年2月23日 デビュー。車りょうの はしっこに 丸い まどが あるよ。白い なみなみ「サインウェーブ」は、むかしの 赤い 電車の しるし。' },
+  { id:'m02', rarity:'n', line:'M', series:'02[系|けい]', body:'#E3E8EE', stripe:'#E60012', style:'std', old:true,
+    desc:'ぎん色に 赤い 線。まえの 丸ノ内線の 電車。',
+    mania:'1988年 とうじょう。リニューアルした 車りょうは、日本で はじめて「PMSM（えいきゅう じしゃく）モーター」を つかったよ。' },
+  { id:'m300', rarity:'n', line:'M', series:'300形', body:'#D7261E', stripe:'#FFFFFF', style:'retro', old:true,
+    desc:'1954年、丸ノ内線が できた ときの 赤い 電車。',
+    mania:'赤い 体に 白い 線と サインウェーブ。いまの 2000[系|けい]の 赤は、この 電車を お手本に しているんだ。' },
+  { id:'m500', rarity:'n', line:'M', series:'500形', body:'#D7261E', stripe:'#FFFFFF', style:'retro', old:true,
+    desc:'300形の なかまで、たくさん 作られた 赤い 電車。',
+    mania:'引たいした あと、海を こえて アルゼンチンの ブエノスアイレスへ 行って 走ったよ！' },
+  { id:'h13000', rarity:'n', line:'H', series:'13000[系|けい]', body:'#E3E8EE', stripe:'#9CAEB7', style:'std',
+    desc:'日[比|び]谷線の 新しい 電車。',
+    mania:'2017年 とうじょう。18メートル×8りょうから、20メートル×7りょうに かわったよ。[東武|とうぶ]の 70000[系|けい]と きょうだい みたいな 電車。' },
+  { id:'h03', rarity:'n', line:'H', series:'03[系|けい]', body:'#E3E8EE', stripe:'#9CAEB7', style:'std', old:true,
+    desc:'日[比|び]谷線を 30年 ちかく 走った 電車。',
+    mania:'1988年 とうじょう、2020年に 引たい。[長野|ながの]電[鉄|てつ]などに うつって、いまも 走っているよ。' },
+  { id:'h3000', rarity:'n', line:'H', series:'3000[系|けい]', body:'#D5DBE2', stripe:'#9CAEB7', style:'retro', old:true,
+    desc:'日[比|び]谷線が できた ときの ステンレスの 電車。',
+    mania:'ずんぐりした 顔から、ニックネームは「マッコウクジラ」！ 1961年に とうじょうしたよ。' },
+  { id:'t15000', rarity:'n', line:'T', series:'15000[系|けい]', body:'#E3E8EE', stripe:'#00A7DB', style:'wide',
+    desc:'ドアが ふつうより 大きい「ワイドドア」の 電車。',
+    mania:'こみあう 東西線のために、ドアの はばを 1.8メートルに したよ。のりおりが スムーズ！ 2010年 とうじょう。' },
+  { id:'t05', rarity:'n', line:'T', series:'05[系|けい]', body:'#E3E8EE', stripe:'#00A7DB', style:'std',
+    desc:'東西線で 大かつやくの ぎん色の 電車。',
+    mania:'1988年 とうじょう。作られた 年に よって、顔の 形が ちがう へんせいが あるよ。くらべて みよう！' },
+  { id:'t07', rarity:'n', line:'T', series:'07[系|けい]', body:'#E3E8EE', stripe:'#00A7DB', style:'round',
+    desc:'もとは [有|ゆう]楽町線の 電車 だったよ。',
+    mania:'1993年に [有|ゆう]楽町線用で とうじょう。そのあと 東西線へ おひっこし した、てんきんを けいけんした 電車。' },
+  { id:'t5000', rarity:'n', line:'T', series:'5000[系|けい]', body:'#D5DBE2', stripe:'#00A7DB', style:'retro', old:true,
+    desc:'東西線が できた ころの ステンレスの 電車。',
+    mania:'1964年、東西線の かいぎょうと いっしょに とうじょう。引たい後は 外国の インドネシアへも 行ったよ。' },
+  { id:'c16000', rarity:'n', line:'C', series:'16000[系|けい]', body:'#E3E8EE', stripe:'#009944', style:'round',
+    desc:'千[代|よ]田線の エース！',
+    mania:'2010年 とうじょう。電気を せつやく できる「PMSM」モーターを つかっているよ。小田[急|きゅう]線へも 直通 するんだ。' },
+  { id:'c6000', rarity:'n', line:'C', series:'6000[系|けい]', body:'#D5DBE2', stripe:'#009944', style:'std', old:true,
+    desc:'千[代|よ]田線を 50年 ちかく 走った 名車。',
+    mania:'1968年 とうじょう、2018年に 引たい。インドネシアへも たくさん わたって 走ったよ。' },
+  { id:'y10000', rarity:'n', line:'YF', series:'10000[系|けい]', body:'#E3E8EE', stripe:'#C1A470', style:'round',
+    desc:'まんまるな 顔の [有|ゆう]楽町線・[副都|ふくと]心線の 電車。',
+    mania:'2006年 とうじょう。[副都|ふくと]心線から [東急|とうきゅう][東横|とうよこ]線、みなとみらい線の [元町・中華街|もとまち・ちゅうかがい]まで 行けるよ。' },
+  { id:'y17000', rarity:'n', line:'YF', series:'17000[系|けい]', body:'#E3E8EE', stripe:'#C1A470', style:'std',
+    desc:'2021年に デビューした 新しい 電車。',
+    mania:'7000[系|けい]と 入れかわりで とうじょう。8りょうと 10りょうの へんせいが あるよ。' },
+  { id:'y7000', rarity:'n', line:'YF', series:'7000[系|けい]', body:'#D5DBE2', stripe:'#C1A470', style:'std', old:true,
+    desc:'[有|ゆう]楽町線が できた ころから 走った 電車。',
+    mania:'1974年 とうじょう。[副都|ふくと]心線でも かつやくして、2022年ごろ 引たいしたよ。' },
+  { id:'z08', rarity:'n', line:'Z', series:'08[系|けい]', body:'#E3E8EE', stripe:'#8F76D6', style:'std',
+    desc:'むらさきの 線の 半[蔵|ぞう]門線の 電車。',
+    mania:'2003年、半[蔵|ぞう]門線が [押上|おしあげ]まで のびた ときに とうじょう。[東武|とうぶ]線や [東急|とうきゅう]線へも 直通するよ。' },
+  { id:'z18000', rarity:'n', line:'Z', series:'18000[系|けい]', body:'#E3E8EE', stripe:'#8F76D6', style:'round',
+    desc:'半[蔵|ぞう]門線の いちばん 新しい 電車。',
+    mania:'2021年 とうじょう。8000[系|けい]と 同じ 19へんせいが 作られる けいかくで、入れかえが すすんだよ。' },
+  { id:'z8000', rarity:'n', line:'Z', series:'8000[系|けい]', body:'#D5DBE2', stripe:'#8F76D6', style:'std', old:true,
+    desc:'45年 がんばった、半[蔵|ぞう]門線の 顔。',
+    mania:'1981年に 走りはじめた。じつは 1年 くらい 東西線を 走った へんせいも あったんだ。18000[系|けい]と 入れかわって 引たい。' },
+  { id:'n9000', rarity:'n', line:'N', series:'9000[系|けい]', body:'#E3E8EE', stripe:'#00ADA9', style:'std',
+    desc:'エメラルド色の 線の、南北線の 電車。',
+    mania:'1991年 とうじょう。南北線は 日本の 地下てつで はじめて、ぜんぶの えきに ホームドアを つけたんだ。' },
+
+  // ===================== ★★ レア：大阪メトロ（11しゅるい）=====================
+  { id:'o30000m', rarity:'r', line:'oM', series:'30000[系|けい]', body:'#E3E8EE', stripe:'#E5171F', style:'round',
+    desc:'[御堂筋|みどうすじ]線の 新しい 顔！',
+    mania:'2011年に [御堂筋|みどうすじ]線で 走りはじめた。10りょう へんせいの 長い 電車だよ。大[阪|さか]で いちばん こむ 線を ささえているんだ。' },
+  { id:'o30000m4', rarity:'r', line:'oM', series:'30000[系|けい] だい4へんせい', body:'#F7E9EE', stripe:'#E5171F', style:'round',
+    desc:'時間で 車内の あかりの 色が かわる、ふしぎな 電車！',
+    mania:'2016年に とうじょう。あさは「電きゅう色」、ゆうがたは「さくら色」など、5しゅるいの あかりが あるよ。車りょう ばんごうの さいごが「04」なら この 電車！' },
+  { id:'o21', rarity:'r', line:'oM', series:'21[系|けい]', body:'#E3E8EE', stripe:'#E5171F', style:'std',
+    desc:'長く [御堂筋|みどうすじ]線を ささえる ベテラン 電車。',
+    mania:'1990年[代|だい]に とうじょうした「新20[系|けい]」グループの なかま。谷町線の 22[系|けい]とは きょうだいだよ。' },
+  { id:'o23', rarity:'r', line:'oY', series:'23[系|けい]', body:'#E3E8EE', stripe:'#0078BA', style:'std',
+    desc:'青い 線が かっこいい、四つ[橋|ばし]線の 電車。',
+    mania:'21・22・23・24・25[系|けい]は きょうだい。さいごの 数字が、線の ばんごう（1ごう線〜5ごう線）と 同じ なんだ！ 23[系|けい]は 3ごう線＝四つ[橋|ばし]線。' },
+  { id:'o400', rarity:'r', line:'oC', series:'400[系|けい]', body:'#E9EDF0', stripe:'#019A66', style:'space',
+    desc:'うちゅう船みたいな 顔！ 前の まどから 外が よく 見えるよ。',
+    mania:'2023年6月25日 デビュー。6りょう×23へんせい。1りょう だけ「クロスシート」の 車りょうが あるよ。車りょう ばんごうは「409-01」みたいに ハイフンつき！' },
+  { id:'o20', rarity:'r', line:'oC', series:'20[系|けい]', body:'#E3E8EE', stripe:'#019A66', style:'std', old:true,
+    desc:'中[央|おう]線を 40年 走った 電車。',
+    mania:'1984年 とうじょう。レールの よこの「サードレール」から 電気を とる 電車で、はじめて「VVVFインバータ」を つかった れきしに のこる 電車。2024年3月に 引たい。' },
+  { id:'o25', rarity:'r', line:'oS', series:'25[系|けい]', body:'#E3E8EE', stripe:'#E44D93', style:'std',
+    desc:'ピンクの 線の 千日前線を 走る 電車。',
+    mania:'「25」の 5は、5ごう線＝千日前線の いみ。みじかい 4りょう へんせいで 走っているよ。' },
+  { id:'o66', rarity:'r', line:'oK', series:'66[系|けい]', body:'#E3E8EE', stripe:'#814721', style:'pan',
+    desc:'大[阪|さか]メトロ なのに、パンタグラフが ある めずらしい 電車！',
+    mania:'[阪急|はんきゅう]電車の 線ろへ 直通 するから、上の 電線から 電気を とるんだ。6ごう線＝[堺筋|さかいすじ]線の 電車だよ。' },
+  { id:'o70', rarity:'r', line:'oN', series:'70[系|けい]', body:'#E3E8EE', stripe:'#A9CC51', style:'small',
+    desc:'リニアモーターで 走る、小さめの 地下てつ電車。',
+    mania:'1990年の「花の 万ぱく」に あわせて とうじょう。車体が 小さいから、トンネルも 小さく 作れるんだ。' },
+  { id:'o80', rarity:'r', line:'oI', series:'80[系|けい]', body:'#E3E8EE', stripe:'#EE7B1A', style:'small',
+    desc:'オレンジの 線の 今里[筋|すじ]線を 走る リニア電車。',
+    mania:'2006年 とうじょう。70[系|けい]と 同じ リニアモーターの なかま。4りょう へんせいだよ。' },
+  { id:'o200', rarity:'r', line:'oP', series:'200[系|けい]', body:'#F4F7FA', stripe:'#00A3D9', style:'tram',
+    desc:'うんてんしが のっていない！ じどうで 走るよ。',
+    mania:'2016年 とうじょう。ゴムの タイヤで 走る ニュートラム。へんせい ごとに 前の 色が ちがう、カラフルな 電車だよ。' },
+
+  // ===================== ★★★ スーパーレア：谷町線（5しゅるい）=====================
+  { id:'t22', rarity:'s', line:'oT', series:'22[系|けい]', body:'#E3E8EE', stripe:'#522886', style:'std',
+    desc:'谷町線の エース！ むらさきの 線が 目じるし。',
+    mania:'1990年 とうじょう。30000[系|けい]が 来るまでの 19年かん、谷町線で いちばん 新しい 電車 だったよ。22の「2」は 2ごう線＝谷町線の いみ！' },
+  { id:'t30000', rarity:'s', line:'oT', series:'30000[系|けい]', body:'#E3E8EE', stripe:'#522886', style:'round',
+    desc:'30000[系|けい]で いちばん さいしょに 走ったのは 谷町線！',
+    mania:'2009年に 谷町線で デビュー。そのあと [御堂筋|みどうすじ]線にも なかまが ふえたよ。谷町線の むらさきは、お寺の えらい おぼうさんの きものの 色が もとに なっているんだって。' },
+  { id:'t30000a', rarity:'s', line:'oT', series:'30000A[系|けい]', body:'#EEF1F4', stripe:'#522886', style:'dots',
+    desc:'キラキラ ドットもようの 電車。いまは 谷町線で 走っているよ。',
+    mania:'2022年7月22日に 中[央|おう]線で デビュー。万ぱくの あと、2025年12月までに 10へんせい ぜんぶが 谷町線へ おひっこし！ 白い ドットは「町の 人」、グレーは「町なみ」の いみ。' },
+  { id:'t10', rarity:'s', line:'oT', series:'10[系|けい]', body:'#D5DBE2', stripe:'#E5171F', style:'std', old:true,
+    desc:'じつは 谷町線 生まれ！ のちに [御堂筋|みどうすじ]線の 顔に なったよ。',
+    mania:'1973年、さいしょは「20[系|けい]」という 名前で 谷町線に 来たんだ。サードレールで 走る 電車で、日本 はじめての れいぼう車。2022年7月4日に 引たい。' },
+  { id:'t30', rarity:'s', line:'oT', series:'30[系|けい]', body:'#D5DBE2', stripe:'#522886', style:'retro', old:true,
+    desc:'四角い 顔の 電車。谷町線で さいごまで がんばったよ。',
+    mania:'大[阪|さか]の 地下てつで 長く かつやくした 30[系|けい]。さいごは 谷町線で、2013年10月6日に ラストランを したよ。' },
 ];
-const RARITY_LABEL = { n:'ノーマル', r:'レア！', s:'★キラ☆スーパーレア★' };
+
+const RARITY_LABEL = { n:'東京メトロ', r:'レア！ 大[阪|さか]メトロ', s:'キラ☆スーパーレア 谷町線' };
 const RARITY_STARS = { n:'★', r:'★★', s:'★★★' };
 const RARITY_ORDER = [
-  {key:'s', title:'スーパーレア', cls:'st-s', star:'★★★'},
-  {key:'r', title:'レア',         cls:'st-r', star:'★★'},
-  {key:'n', title:'ノーマル',     cls:'st-n', star:'★'},
+  {key:'s', title:'スーパーレア（谷町線）',       cls:'st-s', star:'★★★'},
+  {key:'r', title:'レア（大[阪|さか]メトロ）',     cls:'st-r', star:'★★'},
+  {key:'n', title:'ノーマル（東京メトロ）',       cls:'st-n', star:'★'},
 ];
+
+/* ふりがな：[かん字|よみ] → <ruby> */
+function rb(s){ return String(s).replace(/\[([^|\]]+)\|([^\]]+)\]/g, '<ruby>$1<rt>$2</rt></ruby>'); }
+
+/* 線の マーク */
+function lineBadge(L){
+  let h = '<span class="lbadge" style="--lc:' + L.color + '">' + L.letter + '</span>';
+  if(L.letter2) h += '<span class="lbadge" style="--lc:' + L.color2 + '">' + L.letter2 + '</span>';
+  return h;
+}
+
+/* 電車の 顔の イラスト（SVG） */
+const DOTS = [[16,24],[26,30],[74,22],[84,34],[20,46],[80,50],[14,62],[86,66],[30,84],[70,86],[50,30],[22,74],[78,78],[36,22],[64,26],[44,90],[58,72],[12,38]];
+function trainSVG(it, locked){
+  const L = LINES[it.line];
+  const body   = locked ? '#cfd6e2' : it.body;
+  const stripe = locked ? '#b7c0d1' : (it.stripe || L.color);
+  const edge   = locked ? '#a9b2c4' : '#4b5568';
+  const st = it.style || 'std';
+  const rx = { std:12, round:26, retro:20, space:34, wide:12, dots:24, pan:12, small:18, tram:24 }[st] || 12;
+  const top = st === 'pan' ? 16 : 8;
+  let s = '<svg class="train-svg" viewBox="0 0 100 112" aria-hidden="true">';
+  s += '<ellipse cx="50" cy="106" rx="38" ry="4" fill="rgba(0,0,0,.18)"/>';
+  if(st === 'pan'){
+    s += '<path d="M30 12 L50 3 L70 12" fill="none" stroke="' + edge + '" stroke-width="2.4"/>';
+    s += '<rect x="26" y="1" width="48" height="3" rx="1.5" fill="' + edge + '"/>';
+  }
+  s += '<rect x="8" y="' + top + '" width="84" height="' + (98 - top) + '" rx="' + rx + '" fill="' + body + '" stroke="' + edge + '" stroke-width="2.4"/>';
+  if(st === 'space'){
+    s += '<rect x="13" y="' + (top+6) + '" width="74" height="52" rx="26" fill="#18263f"/>';
+    s += '<path d="M20 ' + (top+18) + ' Q30 ' + (top+9) + ' 46 ' + (top+10) + '" stroke="rgba(255,255,255,.55)" stroke-width="3" fill="none" stroke-linecap="round"/>';
+    s += '<rect x="8" y="72" width="84" height="7" fill="' + stripe + '"/>';
+  } else {
+    // ゆき先 ひょうじ
+    s += '<rect x="30" y="' + (top+4) + '" width="40" height="7" rx="2" fill="#1b1f27"/>';
+    s += '<rect x="35" y="' + (top+6) + '" width="30" height="3" rx="1" fill="' + (locked ? '#8a93a5' : '#ffb347') + '"/>';
+    // まど
+    s += '<rect x="15" y="' + (top+15) + '" width="70" height="30" rx="' + (st==='round'||st==='dots' ? 10 : 5) + '" fill="#1e2b45"/>';
+    s += '<path d="M20 ' + (top+38) + ' L32 ' + (top+19) + ' L40 ' + (top+19) + ' L28 ' + (top+38) + 'Z" fill="rgba(255,255,255,.22)"/>';
+    if(st !== 'tram' && st !== 'small'){
+      // ひじょう口の とびら
+      s += '<rect x="39" y="' + (top+13) + '" width="22" height="' + (78 - top) + '" rx="3" fill="none" stroke="rgba(0,0,0,.28)" stroke-width="1.6"/>';
+    }
+    if(st === 'wide'){
+      s += '<rect x="8" y="58" width="84" height="5" fill="' + stripe + '"/><rect x="8" y="66" width="84" height="5" fill="' + stripe + '"/>';
+    } else if(st === 'retro'){
+      s += '<rect x="8" y="60" width="84" height="8" fill="' + stripe + '"/>';
+      s += '<circle cx="50" cy="' + (top+2) + '" r="0" fill="none"/>';
+    } else if(st !== 'dots'){
+      s += '<rect x="8" y="59" width="84" height="9" fill="' + stripe + '"/>';
+    }
+    if(it.line === 'YF' && !locked){
+      s += '<rect x="8" y="68" width="84" height="3" fill="' + L.color2 + '"/>';
+    }
+    if(it.id === 'm2000' || it.id === 'm300' || it.id === 'm500'){
+      if(!locked) s += '<path d="M8 72 Q20 66 32 72 T56 72 T80 72 T104 72" stroke="#fff" stroke-width="2.4" fill="none"/>';
+    }
+  }
+  if(st === 'dots'){
+    DOTS.forEach((d, i) => {
+      if(d[1] > top+12 && d[1] < top+48 && d[0] > 12 && d[0] < 88) return; // まどの 上には かかない
+      const c = locked ? '#b7c0d1' : (i % 4 === 0 ? '#E0B03A' : (i % 3 === 0 ? '#8d95a3' : stripe));
+      s += '<circle cx="' + d[0] + '" cy="' + d[1] + '" r="' + (i % 2 ? 3.2 : 2.2) + '" fill="' + c + '"/>';
+    });
+  }
+  // ライト
+  const ly = st === 'space' ? 86 : 80;
+  s += '<circle cx="22" cy="' + ly + '" r="5" fill="' + (locked ? '#e4e8ef' : '#fff6c4') + '" stroke="' + edge + '" stroke-width="1.4"/>';
+  s += '<circle cx="78" cy="' + ly + '" r="5" fill="' + (locked ? '#e4e8ef' : '#fff6c4') + '" stroke="' + edge + '" stroke-width="1.4"/>';
+  if(st === 'retro'){
+    s += '<circle cx="50" cy="' + (top+3) + '" r="3.5" fill="' + (locked ? '#e4e8ef' : '#fff6c4') + '" stroke="' + edge + '" stroke-width="1.2"/>';
+  }
+  // スカート
+  s += '<rect x="16" y="94" width="68" height="7" rx="2" fill="#3a3f4a"/>';
+  if(st === 'tram'){
+    s += '<circle cx="28" cy="101" r="6" fill="#23272e"/><circle cx="72" cy="101" r="6" fill="#23272e"/>';
+  }
+  s += '</svg>';
+  return s;
+}
+
+/* カードの 中身（ガチャ・ずかん 共通） */
+function cardHTML(it){
+  const L = LINES[it.line];
+  return '' +
+    '<div class="tc-top"><span class="tc-co ' + L.co + '">' + rb(COMPANY[L.co]) + '</span>' +
+      (it.old ? '<span class="tc-old">なつかし</span>' : '<span class="tc-now">いま 走ってる</span>') + '</div>' +
+    '<div class="tc-art">' + trainSVG(it) + '</div>' +
+    '<div class="tc-line">' + lineBadge(L) + '<span>' + rb(L.name) + '</span></div>' +
+    '<div class="tc-name">' + rb(it.series) + '</div>' +
+    '<div class="tc-desc">' + rb(it.desc) + '</div>' +
+    '<div class="tc-mania"><div class="tc-mania-h">🔍 マニア じょうほう</div><div class="tc-mania-b">' + rb(it.mania) + '</div></div>';
+}
+
 const collection = {};       // id -> もっている かず
 const newItems = new Set();  // ずかんで NEW! を出す用
 let gachaBusy = false;
@@ -1494,8 +1854,9 @@ function drawGacha(){
   updateCoins(false);   // ガチャ代は赤フラッシュなし
 
   // レアリティ抽選（ノーマル70％・レア25％・スーパーレア5％）
-  const r = Math.random();
-  const rar = r < 0.70 ? 'n' : (r < 0.95 ? 'r' : 's');
+  const tot = gachaRates.n + gachaRates.r + gachaRates.s;
+  const r = Math.random() * tot;
+  const rar = r < gachaRates.n ? 'n' : (r < gachaRates.n + gachaRates.r ? 'r' : 's');
   const pool = ITEMS.filter(it => it.rarity === rar);
   const item = pool[Math.floor(Math.random()*pool.length)];
 
@@ -1543,17 +1904,17 @@ function openGachaAnim(item, isNew){
     machine.classList.remove('shaking','charging');
     machine.classList.add('hide');
 
-    document.getElementById('giEmoji').textContent = item.emoji;
-    document.getElementById('giName').textContent  = item.name;
+    document.getElementById('giBody').innerHTML = cardHTML(item);
+    document.getElementById('giBody').scrollTop = 0;
     const rEl = document.getElementById('giRarity');
-    rEl.textContent = RARITY_LABEL[item.rarity];
+    rEl.innerHTML = rb(RARITY_LABEL[item.rarity]);
     rEl.className = 'gi-rarity ' + item.rarity;
     const sEl = document.getElementById('giStars');
     sEl.textContent = RARITY_STARS[item.rarity];
     sEl.className = 'gi-stars ' + item.rarity;
     document.getElementById('giDup').innerHTML =
-      isNew ? '<span class="gi-new">✨ NEW！はじめて あえたね！</span>'
-            : ('あえた かず：' + collection[item.id]);
+      isNew ? '<span class="gi-new">✨ NEW！はじめて ゲット！</span>'
+            : ('ゲットした かず：' + collection[item.id]);
 
     gachaItem.classList.add('show');
     sndPoyon();
@@ -1602,7 +1963,7 @@ function renderCollection(){
     sec.className = 'coll-section';
     const title = document.createElement('div');
     title.className = 'coll-section-title';
-    title.innerHTML = '<span class="' + group.cls + '">' + group.star + '</span> ' + group.title;
+    title.innerHTML = '<span class="' + group.cls + '">' + group.star + '</span> ' + rb(group.title);
     sec.appendChild(title);
 
     const grid = document.createElement('div');
@@ -1611,12 +1972,14 @@ function renderCollection(){
       const cnt = collection[it.id] || 0;
       const got = cnt > 0;
       const cell = document.createElement('div');
-      cell.className = 'coll-cell ' + (got ? ('got ' + it.rarity) : 'locked');
+      cell.className = 'coll-cell ' + (got ? ('got tap ' + it.rarity) : 'locked');
       cell.innerHTML =
         (got && newItems.has(it.id) ? '<span class="coll-newbadge">NEW</span>' : '') +
         (cnt > 1 ? '<span class="coll-count">×' + cnt + '</span>' : '') +
-        '<span class="coll-emoji">' + (got ? it.emoji : '❓') + '</span>' +
-        '<span class="coll-name">' + (got ? it.name : '？？？') + '</span>';
+        '<span class="coll-art">' + trainSVG(it, !got) + '</span>' +
+        (got ? '<span class="coll-line">' + lineBadge(LINES[it.line]) + '</span>' : '') +
+        '<span class="coll-name">' + (got ? rb(it.series) : '？？？') + '</span>';
+      if(got) cell.addEventListener('click', () => openDetail(it));
       grid.appendChild(cell);
     });
     sec.appendChild(grid);
@@ -1624,6 +1987,17 @@ function renderCollection(){
   });
 }
 function openCollection(){ newItems.clear(); resetArmed = false; updateResetBtn(); renderCollection(); collOverlay.classList.add('show'); tone(700,0.08,'triangle',0.1); }
+function openDetail(it){
+  const r = document.getElementById('dtRarity');
+  r.innerHTML = rb(RARITY_LABEL[it.rarity]); r.className = 'gi-rarity ' + it.rarity;
+  document.getElementById('dtBody').innerHTML = cardHTML(it);
+  document.getElementById('detailOverlay').classList.add('show');
+  tone(880,0.06,'triangle',0.1); tone(1175,0.08,'triangle',0.1,0.05);
+}
+function closeDetail(){ document.getElementById('detailOverlay').classList.remove('show'); }
+document.getElementById('dtClose').addEventListener('click', closeDetail);
+document.getElementById('detailOverlay').addEventListener('click', (e) => { if(e.target.id === 'detailOverlay') closeDetail(); });
+
 function closeCollection(){ collOverlay.classList.remove('show'); resetArmed = false; updateResetBtn(); }
 
 gachaBtn.addEventListener('click', () => { getCtx(); drawGacha(); });
@@ -1675,7 +2049,7 @@ function buildDevGrid(){
     sec.className = 'coll-section';
     const title = document.createElement('div');
     title.className = 'coll-section-title';
-    title.innerHTML = '<span class="' + group.cls + '">' + group.star + '</span> ' + group.title;
+    title.innerHTML = '<span class="' + group.cls + '">' + group.star + '</span> ' + rb(group.title);
     sec.appendChild(title);
 
     const grid = document.createElement('div');
@@ -1687,10 +2061,11 @@ function buildDevGrid(){
       cell.dataset.id = it.id;
       cell.innerHTML =
         (cnt > 0 ? '<span class="coll-count">×' + cnt + '</span>' : '') +
-        '<span class="coll-emoji">' + it.emoji + '</span>' +
-        '<span class="coll-name">' + it.name + '</span>' +
-        '<span class="dev-plus">+1</span>';
-      cell.addEventListener('click', () => grantCharacter(it.id, cell));
+        '<span class="coll-art">' + trainSVG(it) + '</span>' +
+        '<span class="coll-line">' + lineBadge(LINES[it.line]) + '</span>' +
+        '<span class="coll-name">' + rb(it.series) + '</span>' +
+        (devTapMode === 'give' ? '<span class="dev-plus">+1</span>' : '');
+      cell.addEventListener('click', () => { if(devTapMode === 'give') grantCharacter(it.id, cell); else openDetail(it); });
       grid.appendChild(cell);
     });
     sec.appendChild(grid);
@@ -1715,10 +2090,105 @@ function grantCharacter(id, cell){
   tone(880, 0.07, 'square', 0.12); tone(1175, 0.1, 'triangle', 0.12, 0.05);
 }
 
-function openDev(){ buildDevGrid(); devOverlay.classList.add('show'); tone(520,0.06,'square',0.1); tone(700,0.08,'square',0.1,0.05); }
+let devTapMode = 'view';
+function openDev(){ buildDevGrid(); renderRates(); devOverlay.classList.add('show'); tone(520,0.06,'square',0.1); tone(700,0.08,'square',0.1,0.05); }
+
+/* タブ */
+document.querySelectorAll('.dev-tab').forEach(t => t.addEventListener('click', () => {
+  document.querySelectorAll('.dev-tab').forEach(x => x.classList.toggle('active', x === t));
+  document.getElementById('devPanelRates').hidden = t.dataset.tab !== 'rates';
+  document.getElementById('devPanelList').hidden  = t.dataset.tab !== 'list';
+  tone(700,0.05,'square',0.08);
+}));
+document.querySelectorAll('.dev-modebtn').forEach(b => b.addEventListener('click', () => {
+  devTapMode = b.dataset.mode;
+  document.querySelectorAll('.dev-modebtn').forEach(x => x.classList.toggle('active', x === b));
+  buildDevGrid();
+  tone(760,0.05,'square',0.08);
+}));
+
+/* 出る かくりつ */
+function pct(k){
+  const tot = gachaRates.n + gachaRates.r + gachaRates.s;
+  return tot > 0 ? gachaRates[k] / tot * 100 : 0;
+}
+function fmt(v){ return (Math.round(v * 10) / 10).toString(); }
+function renderRates(){
+  ['n','r','s'].forEach(k => {
+    document.querySelector('.rate-slider[data-k="' + k + '"]').value = Math.round(pct(k));
+    document.getElementById('rateVal_' + k).textContent = fmt(pct(k)) + '%';
+  });
+  const cnt = { n:0, r:0, s:0 };
+  ITEMS.forEach(it => cnt[it.rarity]++);
+  document.getElementById('rateEach').innerHTML =
+    '1しゅるい あたりの 出る かくりつ：<br>' +
+    '★★★ 谷町線 … 1つ ' + fmt(pct('s') / cnt.s) + '%（' + cnt.s + 'しゅるい）<br>' +
+    '★★ 大阪メトロ … 1つ ' + fmt(pct('r') / cnt.r) + '%（' + cnt.r + 'しゅるい）<br>' +
+    '★ 東京メトロ … 1つ ' + fmt(pct('n') / cnt.n) + '%（' + cnt.n + 'しゅるい）';
+}
+/* 1つを かえたら、のこり 2つを 今の わりあいの まま ちょうせいして 合計100％に */
+function setRate(k, v){
+  v = Math.max(0, Math.min(100, Math.round(v)));
+  const others = ['n','r','s'].filter(x => x !== k);
+  const oSum = others.reduce((a, x) => a + pct(x), 0);
+  const rest = 100 - v;
+  const next = {}; next[k] = v;
+  others.forEach((x, i) => {
+    next[x] = oSum > 0 ? pct(x) / oSum * rest : rest / 2;
+  });
+  // 小数を まるめて 合計を 100に
+  next[others[0]] = Math.round(next[others[0]]);
+  next[others[1]] = 100 - v - next[others[0]];
+  gachaRates = next;
+  renderRates();
+  saveState(true);
+}
+document.querySelectorAll('.rate-slider').forEach(sl => {
+  sl.addEventListener('input', () => setRate(sl.dataset.k, Number(sl.value)));
+});
+document.querySelectorAll('.rate-step').forEach(b => b.addEventListener('click', () => {
+  setRate(b.dataset.k, pct(b.dataset.k) + Number(b.dataset.d));
+  tone(Number(b.dataset.d) > 0 ? 880 : 620, 0.05, 'square', 0.08);
+}));
+document.querySelectorAll('.rate-preset').forEach(b => b.addEventListener('click', () => {
+  const [n, r, s2] = b.dataset.p.split(',').map(Number);
+  gachaRates = { n, r, s:s2 };
+  renderRates(); saveState(true);
+  tone(660,0.08,'triangle',0.12); tone(990,0.1,'triangle',0.12,0.06);
+}));
+
+/* パスワード（7777） */
+const DEV_PASSWORD = '7777';
+let pwInput = '';
+const pwOverlay = document.getElementById('pwOverlay');
+function renderPw(){
+  document.querySelectorAll('#pwDots span').forEach((d, i) => d.classList.toggle('on', i < pwInput.length));
+}
+function openPw(){ pwInput = ''; renderPw(); document.getElementById('pwMsg').textContent = ''; pwOverlay.classList.add('show'); }
+function closePw(){ pwOverlay.classList.remove('show'); }
+document.querySelectorAll('.pw-pad button[data-n]').forEach(b => b.addEventListener('click', () => {
+  if(pwInput.length >= 4) return;
+  pwInput += b.dataset.n; renderPw(); tone(700 + Number(b.dataset.n) * 30, 0.05, 'square', 0.08);
+  if(pwInput.length === 4){
+    setTimeout(() => {
+      if(pwInput === DEV_PASSWORD){
+        devUnlocked = true; closePw(); openDev();
+      }else{
+        sndSad();
+        document.getElementById('pwMsg').textContent = 'パスワードが ちがいます';
+        const c = document.getElementById('pwCard');
+        c.classList.remove('ng'); void c.offsetWidth; c.classList.add('ng');
+        pwInput = ''; renderPw();
+      }
+    }, 180);
+  }
+}));
+document.getElementById('pwBack').addEventListener('click', () => { pwInput = pwInput.slice(0, -1); renderPw(); });
+document.getElementById('pwCancel').addEventListener('click', closePw);
+pwOverlay.addEventListener('click', (e) => { if(e.target === pwOverlay) closePw(); });
 function closeDev(){ devOverlay.classList.remove('show'); }
 
-document.getElementById('devBtn').addEventListener('click', () => { getCtx(); openDev(); });
+document.getElementById('devBtn').addEventListener('click', () => { getCtx(); if(devUnlocked) openDev(); else openPw(); });
 document.getElementById('devClose').addEventListener('click', closeDev);
 devOverlay.addEventListener('click', (e) => { if(e.target === devOverlay) closeDev(); });
 
